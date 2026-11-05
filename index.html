@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>El Mejor Partido</title>
+  <meta name="description" content="Ranking de los mejores partidos de fútbol profesional de la historia, construido a partir de decenas de rankings, encuestas, foros y estadísticas en varios idiomas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Archivo+Narrow:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Ranking agregado · actualizado <span id="updated"></span></p>
+      <h1>El mejor partido<br>de la historia</h1>
+      <p class="lede">Juntamos lo que dicen medios, encuestas de expertos, votaciones de hinchas, foros y libros —en español, inglés, portugués, italiano y francés— y lo combinamos con datos objetivos de cada partido para construir un ranking transparente.</p>
+      <dl class="stats" id="stats"></dl>
+    </div>
+  </header>
+
+  <nav class="tabs wrap" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="ranking">Ranking</button>
+    <button role="tab" aria-selected="false" data-tab="fuentes">Fuentes</button>
+    <button role="tab" aria-selected="false" data-tab="metodo">Metodología</button>
+  </nav>
+
+  <main class="wrap">
+    <section id="tab-ranking" class="panel">
+      <div class="layout">
+        <aside class="controls" aria-label="Filtros y pesos">
+          <div class="ctrl">
+            <label for="q">Buscar</label>
+            <input id="q" type="search" placeholder="Equipo, apodo, año…">
+          </div>
+          <div class="ctrl">
+            <label for="comp">Competición</label>
+            <select id="comp">
+              <option value="">Todas</option>
+              <option value="mundial">Copa del Mundo</option>
+              <option value="ucl">Copa de Europa / Champions</option>
+              <option value="libertadores">Copa Libertadores</option>
+              <option value="eurocopa">Eurocopa</option>
+              <option value="liga">Ligas</option>
+              <option value="copa-nacional">Copas nacionales</option>
+              <option value="amistoso">Amistosos</option>
+            </select>
+          </div>
+          <div class="ctrl">
+            <label for="era">Época</label>
+            <select id="era">
+              <option value="">Todas</option>
+              <option value="1930-1959">1930 – 1959</option>
+              <option value="1960-1979">1960 – 1979</option>
+              <option value="1980-1999">1980 – 1999</option>
+              <option value="2000-2014">2000 – 2014</option>
+              <option value="2015-2099">2015 – hoy</option>
+            </select>
+          </div>
+
+          <details class="weights" open>
+            <summary>Ajustar el algoritmo</summary>
+            <div class="ctrl">
+              <label for="w-spec"><span>Opinión / espectáculo</span> <output id="w-spec-out">80 / 20</output></label>
+              <input id="w-spec" type="range" min="0" max="100" step="5" value="20">
+              <p class="hint">0 = sólo lo que dicen las fuentes · 100 = sólo goles, remontada, instancia y dramatismo.</p>
+            </div>
+            <div id="type-weights"></div>
+            <button id="reset" class="link">Restablecer valores</button>
+          </details>
+        </aside>
+
+        <div>
+          <p class="result-count" id="count" aria-live="polite"></p>
+          <ol class="ranking" id="ranking"></ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-fuentes" class="panel" hidden>
+      <h2>Fuentes consultadas</h2>
+      <p class="muted">Cada fuente indica qué partidos menciona y, cuando se pudo confirmar, en qué puesto. ¿Falta una? Se agregan en <code>data/sources.js</code>.</p>
+      <div id="sources" class="sources"></div>
+    </section>
+
+    <section id="tab-metodo" class="panel prose" hidden>
+      <h2>Cómo se calcula</h2>
+      <p>No existe un ranking oficial del “mejor partido de la historia”. Lo que sí existen son decenas de listas, encuestas y discusiones que, leídas juntas, muestran un consenso bastante claro. Este sitio las agrega con reglas simples y públicas.</p>
+      <h3>1. Consenso de fuentes (80% por defecto)</h3>
+      <p>Cada vez que una fuente incluye un partido, suma puntos:</p>
+      <ul>
+        <li><strong>Peso del tipo de fuente:</strong> encuesta de expertos 1,3 · libro 1,1 · medio/editorial 1,0 · organismo oficial 1,0 · votación de hinchas 0,9 · foro 0,7 · blog 0,5.</li>
+        <li><strong>Posición en la lista:</strong> el puesto <em>r</em> en una lista de <em>N</em> vale entre 1 y 2 puntos (<code>1 + (N − r + 1) / N</code>). Si aparece sin posición conocida, vale 1,4.</li>
+        <li><strong>Número 1:</strong> +0,5 extra cuando la fuente lo declara el mejor.</li>
+        <li><strong>Alcance:</strong> las listas de “todo el fútbol” multiplican ×1,25 frente a las de una sola competición.</li>
+        <li><strong>Diversidad cultural:</strong> +8% por cada idioma adicional en el que se lo menciona.</li>
+      </ul>
+      <h3>2. Índice de espectáculo (20% por defecto)</h3>
+      <p>Datos objetivos del partido: goles (30%), si hubo remontada (25%), la instancia —una final vale más que un partido de liga— (30%) y dramatismo: prórroga y penales (15%).</p>
+      <h3>3. Limitaciones</h3>
+      <ul>
+        <li>Hay un sesgo hacia el fútbol europeo y anglosajón: es donde más listas se publican.</li>
+        <li>Hay sesgo de recencia: los partidos recientes (como la final de 2022) aparecen en más listas nuevas.</li>
+        <li>Algunas posiciones no se pudieron confirmar porque las páginas originales no estaban accesibles; esas menciones cuentan como “incluido sin posición”.</li>
+        <li>Se excluye el fútbol amateur (por ejemplo, el SC Jülich – TSV Marl-Hüls de 1972 que el libro de 11FREUNDE llama “el partido más grande de todos los tiempos”).</li>
+      </ul>
+      <p>Todo es ajustable desde el panel “Ajustar el algoritmo” en la pestaña Ranking.</p>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>Datos recopilados de fuentes públicas. Las citas pertenecen a sus autores. Código y datos en <code>data/</code> y <code>js/</code>.</p>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
