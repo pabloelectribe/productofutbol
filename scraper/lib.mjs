@@ -154,3 +154,16 @@ export const isElicitation = (title) => {
   const t = normalize(title);
   return ELICITATION_RE.some(re => re.test(t)) && !EXCLUDE_RE.test(t) && !/man of the match/.test(t);
 };
+
+// ¿Un título de Wikipedia es específico de ESE partido? (para redirecciones y
+// resultados de búsqueda). Debe nombrar a los dos equipos, el año o el apodo,
+// y no ser un artículo general (candidaturas, participaciones, temporadas).
+const GENERIC = /\b(bid|candidatura|at the fifa world cup|en la copa mundial|squad|plantel|season|temporada|knockout phase|group [a-h]|fase|history of)\b/;
+export function specificTitle(id, title) {
+  const t = normalize(title), a = aliases[id];
+  if (GENERIC.test(t)) return false;
+  const has = (w) => t.includes(normalize(w));
+  const bothTeams = a.teams.every(list => list.some(has));
+  const year = id.slice(-4);
+  return bothTeams || new RegExp(`(^|[^0-9-])${year}([^0-9]|$)`).test(t) || a.phrases.some(has);
+}

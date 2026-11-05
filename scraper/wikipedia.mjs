@@ -10,7 +10,7 @@
 // Dominios necesarios: *.wikipedia.org, wikimedia.org
 import { writeFile, mkdir } from "node:fs/promises";
 import { aliases } from "../data/aliases.js";
-import { getJSON, normalize } from "./lib.mjs";
+import { getJSON, specificTitle } from "./lib.mjs";
 
 const end = new Date(); end.setUTCDate(1);
 const start = new Date(end); start.setUTCMonth(start.getUTCMonth() - 36);
@@ -26,15 +26,6 @@ async function resolve(lang, title) {
   return hit ? { title: hit.title, how: "búsqueda (revisar)" } : null;
 }
 
-// El título es específico si nombra a los dos equipos, o el año del partido, o uno de sus apodos.
-const specific = (id, title) => {
-  const t = normalize(title), a = aliases[id];
-  const has = (w) => t.includes(normalize(w));
-  const bothTeams = a.teams.every(list => list.some(has));
-  const year = id.slice(-4);
-  return bothTeams || new RegExp(`(^|[^0-9-])${year}([^0-9]|$)`).test(t) || a.phrases.some(has);
-};
-
 const median = (xs) => { const s = [...xs].sort((a, b) => a - b); const n = s.length; return n ? (n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2) : 0; };
 
 const out = {};
@@ -46,7 +37,7 @@ for (const [id, a] of Object.entries(aliases)) {
       if (!r) continue;
       // Validez: una redirección o búsqueda que cae en un artículo general
       // (p. ej. "fase eliminatoria 2018-19") no mide la atención a ESE partido.
-      if (r.how !== "exacto" && !specific(id, r.title)) {
+      if (r.how !== "exacto" && !specificTitle(id, r.title)) {
         console.warn(`${id} [${lang}] descartado: "${title}" lleva a "${r.title}", que no es específico del partido`);
         continue;
       }
