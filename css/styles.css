@@ -210,3 +210,4 @@ h1 {
 .scrape-box h3 { margin: 0 0 6px; font-size: 1rem; }
 .scrape-box p { margin: 6px 0; }
 input[type=range]:disabled { opacity: .4; }
+.cands { margin-top: 10px; } .cands summary { cursor: pointer; font-weight: 600; font-size: .9rem; } .cands ol { font-size: .88rem; padding-left: 1.6em; }

@@ -325,11 +325,23 @@ function scrapeStatus() {
       <p class="small muted">Para correrlo: <code>npm run scrape</code> (ver README).</p>
     </div>`;
   const total = conv.reduce((a, s) => a + s.authors, 0);
+  const cand = new Map();
+  for (const s of conv) for (const c of s.candidates || []) {
+    const x = cand.get(c.label) || { label: c.label, authors: 0, where: [] };
+    x.authors += c.authors; x.where.push(s.name); cand.set(c.label, x);
+  }
+  const top = [...cand.values()].sort((a, b) => b.authors - a.authors).slice(0, 20);
+  const candHtml = top.length ? `
+      <details class="cands"><summary>Partidos que la gente nombra y no están en el catálogo (${cand.size})</summary>
+        <p class="small muted">Detección automática por marcador (“equipo 4-3 equipo”); es ruidosa a propósito y requiere revisión humana antes de sumar un partido al catálogo.</p>
+        <ol>${top.map(c => `<li><b>${esc(c.label)}</b> <span class="muted small">· ${c.authors} personas · ${esc(c.where.join(", "))}</span></li>`).join("")}</ol>
+      </details>` : "";
   return `
     <div class="scrape-box">
       <h3>Recolección automática · ${new Date(scraped.builtAt).toLocaleDateString("es-AR")}</h3>
       <p>${conv.length} comunidades · ${total.toLocaleString("es-AR")} personas que nombraron algún partido · memoria colectiva: ${hasMemory ? Object.keys(memory).length + " partidos" : "sin datos"}.</p>
       <p class="small muted">Un partido entra en el ranking de una comunidad sólo si lo nombran al menos ${MIN_AUTHORS} personas distintas.</p>
+      ${candHtml}
     </div>`;
 }
 
