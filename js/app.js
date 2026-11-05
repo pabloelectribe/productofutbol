@@ -171,7 +171,7 @@ function matchesFilter(r) {
   }
   if (state.country && !m.nat.includes(state.country)) return false;
   if (state.q) {
-    // cada palabra tiene que aparecer: "messi 2022", "pinilla", "chile 2014"
+    // cada palabra tiene que aparecer: "maradona", "cruyff", "messi 2022"
     const hay = fold([m.home, m.away, m.nickname, m.venue, m.date, COMP_LABEL[m.comp],
       ...m.nat.map(c => COUNTRY[c] || c), ...(players[m.id] || [])].join(" "));
     if (!state.q.split(/\s+/).every(w => hay.includes(w))) return false;
