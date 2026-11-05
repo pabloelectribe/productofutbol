@@ -4,7 +4,7 @@
 //   node scraper/reddit.mjs --backend reddit (API JSON pública de Reddit, más limitada)
 //
 // Dominios necesarios: arctic-shift.photon-reddit.com  (o  www.reddit.com)
-import { writeFile, mkdir } from "node:fs/promises";
+import { writeFile, mkdir, readFile } from "node:fs/promises";
 import { getJSON, tally, isElicitation, SEARCH, sleep } from "./lib.mjs";
 
 // cc: país de la comunidad (para el sesgo endogrupal); null si es internacional
@@ -16,6 +16,12 @@ const SUBS = [
 ];
 const MAX_THREADS = 40, MAX_COMMENTS = 1500, MIN_COMMENTS = 10;
 const backend = process.argv.includes("--backend") ? process.argv[process.argv.indexOf("--backend") + 1] : "arctic";
+// --retally: vuelve a analizar con el caché local (data/scraped/raw/), sin pedir nada a la red.
+// El caché guarda textos de usuarios: no se sube al repositorio (.gitignore).
+const RETALLY = process.argv.includes("--retally");
+const RAW = "data/scraped/raw/reddit";
+const cacheRead = async (f) => { try { return JSON.parse(await readFile(`${RAW}/${f}`, "utf8")); } catch { return null; } };
+const cacheWrite = async (f, data) => { await mkdir(RAW, { recursive: true }); await writeFile(`${RAW}/${f}`, JSON.stringify(data)); };
 const only = process.argv.includes("--sub") ? process.argv[process.argv.indexOf("--sub") + 1] : null;
 
 const A = "https://arctic-shift.photon-reddit.com/api";
@@ -78,18 +84,32 @@ const api = {
 const sources = [];
 for (const { sub, lang, cc } of SUBS.filter(s => !only || s.sub === only)) {
   const queries = [...new Set([...SEARCH[lang], ...SEARCH.en.slice(0, 4)])];
-  const threads = new Map();
-  for (const q of queries) {
-    try {
-      for (const t of await api.threads(sub, q))
-        if (isElicitation(t.title) && t.num_comments >= MIN_COMMENTS) threads.set(t.id, t);
-    } catch (e) { console.warn(`r/${sub} "${q}": ${e.message}`); }
+  // todos los hilos encontrados (antes de filtrar) quedan en caché para poder re-filtrar
+  let found = RETALLY ? await cacheRead(`${sub}-threads.json`) : null;
+  if (!found) {
+    const all = new Map();
+    for (const q of queries) {
+      try { for (const t of await api.threads(sub, q)) all.set(t.id, t); }
+      catch (e) { console.warn(`r/${sub} "${q}": ${e.message}`); }
+    }
+    found = [...all.values()];
+    const prev = await cacheRead(`${sub}-threads.json`) || [];
+    const merged = new Map([...prev, ...found].map(t => [t.id, t]));
+    found = [...merged.values()];
+    await cacheWrite(`${sub}-threads.json`, found);
   }
+  const threads = new Map();
+  for (const t of found) if (isElicitation(t.title) && t.num_comments >= MIN_COMMENTS) threads.set(t.id, t);
   const chosen = [...threads.values()].sort((a, b) => b.num_comments - a.num_comments).slice(0, MAX_THREADS);
   console.log(`r/${sub}: ${chosen.length} hilos que preguntan por el mejor partido`);
   const items = [];
   for (const t of chosen) {
-    try { items.push(...await api.comments(t.id)); } catch (e) { console.warn(`  hilo ${t.id}: ${e.message}`); }
+    let cs = await cacheRead(`${t.id}.json`);
+    if (!cs && !RETALLY) {
+      try { cs = await api.comments(t.id); await cacheWrite(`${t.id}.json`, cs); }
+      catch (e) { console.warn(`  hilo ${t.id}: ${e.message}`); }
+    }
+    items.push(...(cs || []));
   }
   const { authors, results, candidates } = tally(items);
   console.log(`  ${items.length} comentarios · ${authors} personas nombran un partido del catálogo · ${candidates.length} candidatos nuevos`);

@@ -39,6 +39,12 @@ const cases = [
   ["Liverpool are playing Milan next week", []],
   ["Argentina is my favourite team", []],
   ["I watched Brazil yesterday and Germany today", []],
+  // casos reales que el detector confundía (parafraseados)
+  ["Probably the 7:1 against Bielefeld at home", []],
+  ["the 7-1 demolition of Roma at Old Trafford", []],
+  ["Solskjaer's winner against Liverpool in the cup", []],
+  ["Our 8-2 loss to United was painful", []],
+  ["The 7:1 between Brazil and Germany was a blast", ["bra-ger-2014"]],
 ];
 test("detecta partidos en texto libre (y no inventa)", () => {
   for (const [text, expected] of cases)
@@ -72,6 +78,12 @@ test("sólo cuenta hilos que preguntan por el mejor partido", () => {
   assert.ok(isElicitation("What's the greatest match of all time?"));
   assert.ok(isElicitation("¿Cuál es el mejor partido de la historia?"));
   assert.ok(!isElicitation("Match thread: Liverpool vs Milan"));
+  assert.ok(isElicitation("Redditors, what was the greatest match you ever saw live."));
+  assert.ok(!isElicitation("[HaytersTV] “Bayern vs PSG is the best game I’ve ever seen.”"));
+  assert.ok(!isElicitation("r/soccer, what is the best 0-0 match you've ever seen?"));
+  assert.ok(!isElicitation("Was that the greatest Champions League match of all time?"));
+  assert.ok(!isElicitation("Maradona with one of the greatest post-match interviews ever given."));
+  assert.ok(!isElicitation("Who holds the greatest man of the match performance of all time?"));
 });
 
 test("las conversaciones se integran como fuentes de la voz popular", () => {

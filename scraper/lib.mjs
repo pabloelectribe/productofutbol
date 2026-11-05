@@ -150,9 +150,12 @@ const ELICITATION_RE = [
   /\b(partita piu bella|miglior(e)? partita)\b.{0,40}\b(sempre|storia|vista|visto)\b/,
 ];
 const EXCLUDE_RE = /\b(performance|goal|gol|player|jugador|jogador|giocatore|kit|stadium|estadio|save|xi|team|equipo|squadra|manager|season|temporada|impact)s?\b/;
+// Además se excluyen: noticias o citas ("[Fuente] Fulano: ..."), preguntas
+// acotadas ("el mejor 0-0") y preguntas sobre un partido puntual ("¿fue ESE el mejor?").
+const NOT_OPEN_RE = /^\s*\[|\b(interview|entrevista|0-0|was that|was this|is this|is that|fue ese|foi esse|tonight|today|yesterday|hoy|anoche)\b|man of the match|post-match|"|“/;
 export const isElicitation = (title) => {
   const t = normalize(title);
-  return ELICITATION_RE.some(re => re.test(t)) && !EXCLUDE_RE.test(t) && !/man of the match/.test(t);
+  return ELICITATION_RE.some(re => re.test(t)) && !EXCLUDE_RE.test(t) && !NOT_OPEN_RE.test(t);
 };
 
 // ¿Un título de Wikipedia es específico de ESE partido? (para redirecciones y
