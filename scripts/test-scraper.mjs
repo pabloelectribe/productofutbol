@@ -8,6 +8,7 @@ import { computeRanking } from "../js/scoring.js";
 import { matches } from "../data/matches.js";
 import { sources } from "../data/sources.js";
 import { aliases } from "../data/aliases.js";
+import { players } from "../data/players.js";
 
 let n = 0;
 const test = (name, fn) => { fn(); n++; console.log("✓", name); };
@@ -17,6 +18,11 @@ test("todos los partidos tienen alias y viceversa", () => {
   for (const id of Object.keys(aliases)) assert.ok(ids.has(id), `alias huérfano: ${id}`);
   for (const id of ids) assert.ok(aliases[id], `partido sin alias: ${id}`);
   for (const [id, a] of Object.entries(aliases)) assert.equal(a.teams.length, 2, `${id}: teams debe tener 2 equipos`);
+});
+
+test("los jugadores apuntan a partidos que existen", () => {
+  const ids = new Set(matches.map(m => m.id));
+  for (const id of Object.keys(players)) assert.ok(ids.has(id), `jugadores de un partido inexistente: ${id}`);
 });
 
 test("normaliza tildes y marcadores", () => {

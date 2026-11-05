@@ -1,4 +1,5 @@
 import { matches } from "../data/matches.js";
+import { players } from "../data/players.js";
 import { sources as curated } from "../data/sources.js";
 import { scraped } from "../data/scraped.js";
 import { conversationSources, memoryScores, MIN_AUTHORS } from "./scraped-sources.js";
@@ -12,6 +13,13 @@ const STAGE_LABEL = {
   final: "Final", semi: "Semifinal", cuartos: "Cuartos de final", octavos: "Eliminatoria",
   "segunda-fase": "Segunda fase", grupos: "Fase de grupos", liga: "Liga", amistoso: "Amistoso",
 };
+// Países (código de data/matches.js → nombre), para el filtro y la búsqueda
+const COUNTRY = {
+  ARG: "Argentina", BEL: "Bélgica", BRA: "Brasil", CHI: "Chile", COL: "Colombia", CPV: "Cabo Verde", CRO: "Croacia",
+  DEN: "Dinamarca", ECU: "Ecuador", ENG: "Inglaterra", ESP: "España", FRA: "Francia", GER: "Alemania",
+  HUN: "Hungría", ITA: "Italia", NED: "Países Bajos", POR: "Portugal", PRK: "Corea del Norte", SWE: "Suecia", URU: "Uruguay",
+};
+const fold = (s) => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 const LANG_LABEL = { es: "Español", en: "Inglés", pt: "Portugués", it: "Italiano", fr: "Francés", de: "Alemán" };
 const AGREEMENT = {
   "convergente":   { label: "Expertos e hinchas coinciden", cls: "ok" },
@@ -61,7 +69,7 @@ const fresh = () => ({
   typeWeights: { ...DEFAULTS.typeWeights },
   corrections: { ...DEFAULTS.corrections },
 });
-const state = { q: "", comp: "", era: "", open: new Set(), ...fresh() };
+const state = { q: "", comp: "", era: "", country: "", open: new Set(), ...fresh() };
 
 function compute() {
   return computeRanking(matches, sources, {
@@ -129,7 +137,11 @@ function renderControls() {
   }));
 }
 
-$("#q").addEventListener("input", e => { state.q = e.target.value.trim().toLowerCase(); render(); });
+$("#q").addEventListener("input", e => { state.q = fold(e.target.value.trim()); render(); });
+$("#country").innerHTML = `<option value="">Todos</option>` + [...new Set(matches.flatMap(m => m.nat))]
+  .sort((a, b) => (COUNTRY[a] || a).localeCompare(COUNTRY[b] || b, "es"))
+  .map(c => `<option value="${c}">${esc(COUNTRY[c] || c)}</option>`).join("");
+$("#country").addEventListener("change", e => { state.country = e.target.value; render(); });
 $("#comp").addEventListener("change", e => { state.comp = e.target.value; render(); });
 $("#era").addEventListener("change", e => { state.era = e.target.value; render(); });
 $("#w-voice").addEventListener("input", e => { state.popularShare = Number(e.target.value); renderControls(); render(); });
@@ -157,9 +169,12 @@ function matchesFilter(r) {
     const y = Number(m.date.slice(0, 4));
     if (y < a || y > b) return false;
   }
+  if (state.country && !m.nat.includes(state.country)) return false;
   if (state.q) {
-    const hay = `${m.home} ${m.away} ${m.nickname} ${m.venue} ${m.date} ${COMP_LABEL[m.comp]}`.toLowerCase();
-    if (!hay.includes(state.q)) return false;
+    // cada palabra tiene que aparecer: "messi 2022", "pinilla", "chile 2014"
+    const hay = fold([m.home, m.away, m.nickname, m.venue, m.date, COMP_LABEL[m.comp],
+      ...m.nat.map(c => COUNTRY[c] || c), ...(players[m.id] || [])].join(" "));
+    if (!state.q.split(/\s+/).every(w => hay.includes(w))) return false;
   }
   return true;
 }
@@ -243,6 +258,7 @@ function detail(r) {
   return `
   <div class="detail">
     <p>${esc(m.summary)}</p>
+    ${players[m.id] ? `<p class="players"><b>Protagonistas:</b> ${players[m.id].map(esc).join(" · ")}</p>` : ""}
     <div class="breakdown">
       ${meter("Voz experta", E.imputed ? 0 : E.score, "exp", E.imputed ? "imputada" : "")}
       ${meter("Voz popular", P.imputed ? 0 : P.score, "pop", P.imputed ? "imputada" : "")}

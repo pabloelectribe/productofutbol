@@ -93,6 +93,7 @@ export function covers(src, m) {
     case "todo": return true;
     case "mundial": return m.comp === "mundial";
     case "mundial-2022": return m.comp === "mundial" && y === 2022;
+    case "mundial-2014": return m.comp === "mundial" && y === 2014;
     case "mundial-2026": return m.comp === "mundial" && y === 2026;
     case "selecciones": return ["mundial", "eurocopa", "amistoso"].includes(m.comp);
     case "clubes": return ["ucl", "libertadores", "liga", "copa-nacional"].includes(m.comp);

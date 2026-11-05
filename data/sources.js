@@ -409,6 +409,19 @@ export const sources = [
     mentions: [
       { match: "arg-cpv-2026", rank: 1, quote: "El 87% de los hinchas le puso 10/10." },
     ] },
+  { id: "br-wc2014", cc: "US", year: 2014, name: "Bleacher Report — 20 Best Matches of the 2014 World Cup", outlet: "Bleacher Report",
+    url: "https://bleacherreport.com/articles/2128196-20-best-matches-of-the-2014-world-cup", lang: "en", country: "EE.UU.",
+    type: "editorial", scope: "mundial-2014", size: 20, ranked: true, accessed: "2026-11-05",
+    mentions: [
+      { match: "bra-chi-2014", rank: 4, quote: "N.º 4 de 20." },
+    ] },
+  { id: "wst-wc2014", cc: "US", year: 2014, name: "World Soccer Talk — Best of 2014 World Cup in Brazil: Games, Goals, Underdogs and More", outlet: "World Soccer Talk",
+    url: "https://worldsoccertalk.com/news/best-of-2014-world-cup-in-brazil-games-goals-underdogs-and-more-20140718-CMS-110521.html", lang: "en", country: "EE.UU.",
+    type: "blog", scope: "mundial-2014", size: null, ranked: true, accessed: "2026-11-05",
+    note: "Elige un único mejor partido del torneo.",
+    mentions: [
+      { match: "bra-chi-2014", rank: 1, quote: "\"This was an all-time classic.\"" },
+    ] },
   { id: "imdb-wc2022", cc: null, year: 2022, name: "IMDb — Lista de usuarios: Most Exciting 2022 FIFA World Cup Match", outlet: "IMDb (lista de usuarios)",
     url: "https://www.imdb.com/list/ls566480916/", lang: "en", country: "Internacional",
     type: "foro", scope: "mundial-2022", size: null, ranked: true, accessed: "2026-11-05",
