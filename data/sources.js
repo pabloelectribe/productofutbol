@@ -9,10 +9,12 @@
 // rank = null significa que el partido aparece en la lista pero no pudimos
 // confirmar su posición (o la lista no es ordenada).
 // "accessed" es la fecha en que se recopiló la información.
+// "year" (opcional) es el año de publicación: la fuente no "ve" partidos posteriores.
+// "cc" es el país del medio (para medir sesgo endogrupal); null si es internacional.
 
 export const sources = [
   // ───────────── Rankings generales ─────────────
-  { id: "si-greatest", name: "Sports Illustrated — The 10 Greatest Soccer Games of All Time", outlet: "Sports Illustrated",
+  { id: "si-greatest", cc: "US", name: "Sports Illustrated — The 10 Greatest Soccer Games of All Time", outlet: "Sports Illustrated",
     url: "https://www.si.com/soccer/greatest-soccer-games-of-all-time-ranked", lang: "en", country: "EE.UU.",
     type: "editorial", scope: "todo", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
@@ -21,11 +23,11 @@ export const sources = [
       { match: "eng-hun-1953", rank: null, quote: "\"One of the greatest soccer matches ever played, despite nothing being at stake but pride.\"" },
       { match: "san-fla-2011", rank: null, quote: "\"One of the most entertaining soccer matches ever played.\"" },
     ] },
-  { id: "si-es", name: "Sports Illustrated (es) — Los 10 mejores partidos de la historia del fútbol", outlet: "Sports Illustrated en Español",
+  { id: "si-es", cc: "US", name: "Sports Illustrated (es) — Los 10 mejores partidos de la historia del fútbol", outlet: "Sports Illustrated en Español",
     url: "https://www.si.com/es-us/futbol/los-10-mejores-partidos-de-la-historia-del-futbol-rankeados", lang: "es", country: "EE.UU.",
     type: "editorial", scope: "todo", size: 10, ranked: true, accessed: "2026-11-05", duplicateOf: "si-greatest",
     mentions: [] },
-  { id: "sportsdunia", name: "Sportsdunia — Top 10 Best Football Matches of All Time", outlet: "Sportsdunia",
+  { id: "sportsdunia", cc: "IND", name: "Sportsdunia — Top 10 Best Football Matches of All Time", outlet: "Sportsdunia",
     url: "https://www.sportsdunia.com/football-analysis/best-football-matches-of-all-time", lang: "en", country: "India",
     type: "blog", scope: "todo", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
@@ -33,52 +35,52 @@ export const sources = [
       { match: "bar-psg-2017", rank: null, quote: "\"One of the best comebacks in football.\"" },
       { match: "arg-fra-2022", rank: null, quote: "\"Probably the most thrilling World Cup final ever.\"" },
     ] },
-  { id: "sportsmole", name: "Sports Mole — The top 10 football matches of all time", outlet: "Sports Mole",
+  { id: "sportsmole", cc: "ENG", name: "Sports Mole — The top 10 football matches of all time", outlet: "Sports Mole",
     url: "https://www.sportsmole.co.uk/football/west-germany/feature/the-top-10-football-matches-of-all-time_502408.html", lang: "en", country: "Reino Unido",
     type: "editorial", scope: "todo", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "mil-liv-2005", rank: null, quote: "Incluido; \"arguably the greatest Champions League match of all time\"." },
       { match: "ita-frg-1970", rank: null, quote: "Incluido en el top 10." },
     ] },
-  { id: "thetoptens", name: "TheTopTens — Best Football (Soccer) Matches of All Time", outlet: "TheTopTens",
+  { id: "thetoptens", cc: null, name: "TheTopTens — Best Football (Soccer) Matches of All Time", outlet: "TheTopTens",
     url: "https://www.thetoptens.com/soccer/football-soccer-matches/", lang: "en", country: "Internacional",
     type: "voto-fans", scope: "todo", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "mun-bay-1999", rank: 1, quote: "Primer lugar en la votación de usuarios (partido del Camp Nou)." },
     ] },
-  { id: "soccerphile", name: "Soccerphile — The Top 20 Most Amazing Games of All Time", outlet: "Soccerphile",
+  { id: "soccerphile", cc: null, name: "Soccerphile — The Top 20 Most Amazing Games of All Time", outlet: "Soccerphile",
     url: "https://www.soccerphile.com/soccerphile/news/greatest-games.html", lang: "en", country: "Internacional",
     type: "blog", scope: "todo", size: 20, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "ita-bra-1982", rank: 1, quote: "Lo nombra \"el mejor partido de la historia\"." },
     ] },
-  { id: "givemesport-biggest", name: "GiveMeSport — The 10 biggest matches in football history", outlet: "GiveMeSport",
+  { id: "givemesport-biggest", cc: "ENG", name: "GiveMeSport — The 10 biggest matches in football history", outlet: "GiveMeSport",
     url: "https://www.givemesport.com/biggest-matches-football-history-ranked/", lang: "en", country: "Reino Unido",
     type: "editorial", scope: "todo", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "arg-fra-2022", rank: 1, quote: "Número 1." },
     ] },
-  { id: "tnt-pa", name: "TNT Sports / PA Sport — 10 of the greatest football matches ever played", outlet: "TNT Sports",
+  { id: "tnt-pa", cc: "ENG", name: "TNT Sports / PA Sport — 10 of the greatest football matches ever played", outlet: "TNT Sports",
     url: "https://www.tntsports.co.uk/football/10-of-the-greatest-football-matches-ever-played_sto6086406/story.shtml", lang: "en", country: "Reino Unido",
     type: "editorial", scope: "todo", size: 10, ranked: false, accessed: "2026-11-05",
     mentions: [
       { match: "bra-ita-1970", rank: null, quote: "\"BRAZIL 4 ITALY 1, WORLD CUP FINAL 1970\"." },
     ] },
-  { id: "watchmojo-nat", name: "WatchMojo — Top 10 Greatest National Football Matches", outlet: "WatchMojo",
+  { id: "watchmojo-nat", cc: "CAN", name: "WatchMojo — Top 10 Greatest National Football Matches", outlet: "WatchMojo",
     url: "https://watchmojo.com/articles/top-10-greatest-national-football-matches-of-all-time", lang: "en", country: "Canadá",
     type: "editorial", scope: "selecciones", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "arg-fra-2022", rank: null, quote: "Incluido." },
       { match: "arg-eng-1986", rank: null, quote: "Incluido." },
     ] },
-  { id: "watchmojo-club", name: "WatchMojo — Top 10 Greatest Club Football Matches", outlet: "WatchMojo",
+  { id: "watchmojo-club", cc: "CAN", name: "WatchMojo — Top 10 Greatest Club Football Matches", outlet: "WatchMojo",
     url: "https://www.watchmojo.com/articles/top-10-greatest-club-football-matches-of-all-time", lang: "en", country: "Canadá",
     type: "editorial", scope: "clubes", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "mun-bay-1999", rank: null, quote: "\"Two goals in injury time to secure a dramatic 2-1 victory.\"" },
       { match: "mil-liv-2005", rank: null, quote: "Incluido." },
     ] },
-  { id: "esdiario", name: "ESdiario — Los 10 partidos más increíbles de la historia del fútbol", outlet: "ESdiario",
+  { id: "esdiario", cc: "ESP", name: "ESdiario — Los 10 partidos más increíbles de la historia del fútbol", outlet: "ESdiario",
     url: "https://www.esdiario.com/deportes/260506/186946/10-partidos-increibles-historia-futbol-puskas-zico-messi.html", lang: "es", country: "España",
     type: "editorial", scope: "todo", size: 10, ranked: false, accessed: "2026-11-05",
     mentions: [
@@ -88,28 +90,28 @@ export const sources = [
       { match: "mil-liv-2005", rank: null, quote: "Incluido." },
       { match: "arg-fra-2022", rank: null, quote: "Incluido (...y Messi)." },
     ] },
-  { id: "marca-50", name: "Marca — Los 50 mejores partidos de la historia", outlet: "Marca",
+  { id: "marca-50", cc: "ESP", name: "Marca — Los 50 mejores partidos de la historia", outlet: "Marca",
     url: "https://www.glieroidelcalcio.com/?p=12942", lang: "es", country: "España",
     type: "editorial", scope: "todo", size: 50, ranked: false, accessed: "2026-11-05",
     note: "Lista de Marca citada por Gli Eroi del Calcio; no se pudo acceder a la lista completa.",
     mentions: [
       { match: "nap-mil-1988", rank: null, quote: "\"Marca ha inserito un match del campionato italiano '88/'89 nelle 50 migliori partite.\"" },
     ] },
-  { id: "senego", name: "Senego — Les plus grands matchs de football de l'histoire", outlet: "Senego",
+  { id: "senego", cc: "SEN", name: "Senego — Les plus grands matchs de football de l'histoire", outlet: "Senego",
     url: "https://senego.com/les-plus-grands-matchs-de-football-de-lhistoire_1648184.html", lang: "fr", country: "Senegal",
     type: "blog", scope: "todo", size: null, ranked: false, accessed: "2026-11-05",
     mentions: [
       { match: "frg-hun-1954", rank: null, quote: "Final de la Copa del Mundo 1954." },
       { match: "bar-psg-2017", rank: null, quote: "\"La Remontada du FC Barcelone en Ligue des champions 2017\"." },
     ] },
-  { id: "larousse", name: "Larousse — Légendes du foot (20 partidos que marcaron la historia)", outlet: "Larousse",
+  { id: "larousse", cc: "FRA", name: "Larousse — Légendes du foot (20 partidos que marcaron la historia)", outlet: "Larousse",
     url: "https://www.livreshebdo.fr/livres/legendes-du-foot-larousse-9782035876508", lang: "fr", country: "Francia",
     type: "libro", scope: "todo", size: 20, ranked: false, accessed: "2026-11-05",
     mentions: [
       { match: "rma-rei-1956", rank: null, quote: "\"Du match Real Madrid-Reims de 1956...\"" },
       { match: "fra-ita-2000", rank: null, quote: "\"...à la finale France-Italie de 2000\"." },
     ] },
-  { id: "labre-2022", name: "La Libre Belgique — Le plus beau match de l'histoire : qualité ou émotion ?", outlet: "La Libre",
+  { id: "labre-2022", cc: "BEL", year: 2022, name: "La Libre Belgique — Le plus beau match de l'histoire : qualité ou émotion ?", outlet: "La Libre",
     url: "https://www.lalibre.be/sports/football/2022/12/22/le-plus-beau-match-de-lhistoire-faut-il-privilegier-la-qualite-ou-lemotion-KLFMZNKBNFGRHLXFAZ67USQBG4/", lang: "fr", country: "Bélgica",
     type: "editorial", scope: "todo", size: null, ranked: false, accessed: "2026-11-05",
     mentions: [
@@ -117,14 +119,14 @@ export const sources = [
     ] },
 
   // ───────────── Encuestas de expertos ─────────────
-  { id: "worldsoccer-2007", name: "World Soccer / The Telegraph — Encuesta de expertos (2007)", outlet: "World Soccer",
+  { id: "worldsoccer-2007", cc: "ENG", year: 2007, name: "World Soccer / The Telegraph — Encuesta de expertos (2007)", outlet: "World Soccer",
     url: "https://www.bigsoccer.com/threads/the-100-greatest-games-of-all-times.481639/", lang: "en", country: "Reino Unido",
     type: "encuesta-expertos", scope: "todo", size: 20, ranked: true, accessed: "2026-11-05",
     note: "Resultado reportado por Reuters; la lista completa del top 20 no está disponible en línea.",
     mentions: [
       { match: "ita-frg-1970", rank: 1, quote: "\"The experts opted for the 1970 semi-final in Mexico City in which Italy beat West Germany 4-3.\"" },
     ] },
-  { id: "nyt-athletic-2026", name: "The New York Times / The Athletic — Los 10 mejores partidos de los Mundiales (vía Infobae)", outlet: "The New York Times",
+  { id: "nyt-athletic-2026", cc: "US", year: 2026, name: "The New York Times / The Athletic — Los 10 mejores partidos de los Mundiales (vía Infobae)", outlet: "The New York Times",
     url: "https://www.infobae.com/deportes/2026/06/09/un-prestigioso-diario-eligio-los-10-mejores-partidos-en-la-historia-de-los-mundiales-los-3-de-argentina-en-el-ranking/", lang: "es", country: "EE.UU. / Argentina",
     type: "editorial", scope: "mundial", size: 10, ranked: true, accessed: "2026-11-05",
     note: "Criterio declarado: importancia/impacto histórico más que calidad técnica.",
@@ -142,7 +144,7 @@ export const sources = [
     ] },
 
   // ───────────── Copa del Mundo ─────────────
-  { id: "si-wc", name: "Sports Illustrated — Ranking the 10 Greatest World Cup Matches", outlet: "Sports Illustrated",
+  { id: "si-wc", cc: "US", name: "Sports Illustrated — Ranking the 10 Greatest World Cup Matches", outlet: "Sports Illustrated",
     url: "https://www.si.com/soccer/ranking-greatest-world-cup-matches-all-time", lang: "en", country: "EE.UU.",
     type: "editorial", scope: "mundial", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
@@ -151,7 +153,7 @@ export const sources = [
       { match: "frg-hun-1954", rank: null, quote: "Incluido." },
       { match: "por-esp-2018", rank: null, quote: "Incluido." },
     ] },
-  { id: "fifa-classics", name: "FIFA — Ten World Cup classics", outlet: "FIFA",
+  { id: "fifa-classics", cc: null, year: 2026, name: "FIFA — Ten World Cup classics", outlet: "FIFA",
     url: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/remembering-ten-world-cup-classics", lang: "en", country: "Internacional",
     type: "oficial", scope: "mundial", size: 10, ranked: false, accessed: "2026-11-05",
     mentions: [
@@ -161,7 +163,7 @@ export const sources = [
       { match: "por-esp-2018", rank: null, quote: "Incluido." },
       { match: "arg-fra-2022", rank: null, quote: "Incluido." },
     ] },
-  { id: "worldsoccer-wc", name: "World Soccer — 10 Greatest World Cup Matches", outlet: "World Soccer",
+  { id: "worldsoccer-wc", cc: "ENG", name: "World Soccer — 10 Greatest World Cup Matches", outlet: "World Soccer",
     url: "https://www.worldsoccer.com/world-cup/greatest-world-cup-matches-401151", lang: "en", country: "Reino Unido",
     type: "editorial", scope: "mundial", size: 10, ranked: false, accessed: "2026-11-05",
     note: "Lista en orden cronológico.",
@@ -171,7 +173,7 @@ export const sources = [
       { match: "bra-eng-1970", rank: null, quote: "Incluido (la atajada de Banks)." },
       { match: "ita-frg-1970", rank: null, quote: "Incluido." },
     ] },
-  { id: "gingerlemon-wc", name: "Gingerly Lemon — Top 10 World Cup Matches Ever Played", outlet: "Gingerly Lemon",
+  { id: "gingerlemon-wc", cc: null, name: "Gingerly Lemon — Top 10 World Cup Matches Ever Played", outlet: "Gingerly Lemon",
     url: "https://gingerylemon.com/all-time-top-10s/top-10-world-cup-matches-ever/", lang: "en", country: "Internacional",
     type: "blog", scope: "mundial", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
@@ -179,7 +181,7 @@ export const sources = [
       { match: "ita-frg-1970", rank: 2, quote: "Puesto 2." },
       { match: "fra-bra-1986", rank: 3, quote: "Puesto 3." },
     ] },
-  { id: "espn-mundiales", name: "ESPN Deportes — Los 10 mejores partidos en la historia de las Copas del Mundo", outlet: "ESPN",
+  { id: "espn-mundiales", cc: "US", name: "ESPN Deportes — Los 10 mejores partidos en la historia de las Copas del Mundo", outlet: "ESPN",
     url: "https://espndeportes.espn.com/futbol/mundial/nota/_/id/6822286/los-10-mejores-partidos-en-la-historia-de-las-copas-del-mundo-punto-no-mas-debate", lang: "es", country: "EE.UU. / Latam",
     type: "editorial", scope: "mundial", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
@@ -190,38 +192,39 @@ export const sources = [
       { match: "frg-hun-1954", rank: null, quote: "Incluido (\"milagro de Berna\")." },
       { match: "uru-bra-1950", rank: null, quote: "\"El momento más brillante de la vasta historia del fútbol charrúa.\"" },
     ] },
-  { id: "flashscore-wc", name: "Flashscore — The 10 greatest FIFA World Cup matches of all time", outlet: "Flashscore",
+  { id: "flashscore-wc", cc: null, name: "Flashscore — The 10 greatest FIFA World Cup matches of all time", outlet: "Flashscore",
     url: "https://www.flashscore.com/news/soccer-world-cup-greatest-matches-of-all-time/S0RFReee", lang: "en", country: "Internacional",
     type: "editorial", scope: "mundial", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "den-uru-1986", rank: 10, quote: "Puesto 10." },
       { match: "arg-ned-1978", rank: 9, quote: "Puesto 9." },
     ] },
-  { id: "megacurioso", name: "Megacurioso — As 9 partidas mais incríveis da história da Copa", outlet: "Megacurioso",
+  { id: "megacurioso", cc: "BRA", name: "Megacurioso — As 9 partidas mais incríveis da história da Copa", outlet: "Megacurioso",
     url: "https://www.megacurioso.com.br/estilo-de-vida/117917-copa-do-mundo-as-9-partidas-mais-incriveis-da-historia.htm", lang: "pt", country: "Brasil",
     type: "blog", scope: "mundial", size: 9, ranked: false, accessed: "2026-11-05",
     mentions: [
       { match: "ita-frg-1970", rank: null, quote: "\"Considerada pela própria FIFA como um dos maiores jogos da história do torneio.\"" },
     ] },
-  { id: "gazeta", name: "Gazeta Esportiva — Melhores jogos de futebol", outlet: "Gazeta Esportiva",
+  { id: "gazeta", cc: "BRA", name: "Gazeta Esportiva — Melhores jogos de futebol", outlet: "Gazeta Esportiva",
     url: "https://www.gazetaesportiva.com/institucional/relembre-alguns-dos-melhores-jogos-de-futebol-dos-ultimos-anos/", lang: "pt", country: "Brasil",
     type: "editorial", scope: "todo", size: null, ranked: false, accessed: "2026-11-05",
     mentions: [
       { match: "frg-hun-1954", rank: null, quote: "\"A maior virada da história do futebol.\"" },
     ] },
-  { id: "athletic-impacto", name: "The Athletic — Jogos mais marcantes das Copas (vía ABCdoABC / DGABC)", outlet: "The Athletic",
+  { id: "athletic-impacto", cc: "US", name: "The Athletic — Jogos mais marcantes das Copas (vía ABCdoABC / DGABC)", outlet: "The Athletic",
     url: "https://www.abcdoabc.com.br/copa-nyt-elege-os-10-jogos-mais/", lang: "pt", country: "Brasil",
     type: "editorial", scope: "mundial", size: 10, ranked: false, accessed: "2026-11-05", duplicateOf: "nyt-athletic-2026",
     mentions: [] },
-  { id: "fourfourtwo-wc2026", name: "FourFourTwo — The 10 best games of the 2026 World Cup", outlet: "FourFourTwo",
+  { id: "fourfourtwo-wc2026", cc: "ENG", year: 2026, name: "FourFourTwo — The 10 best games of the 2026 World Cup", outlet: "FourFourTwo",
     url: "https://www.fourfourtwo.com/competition/the-10-best-games-of-the-2026-world-cup-so-far", lang: "en", country: "Reino Unido",
     type: "editorial", scope: "mundial-2026", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "eng-cro-2026", rank: null, quote: "Incluido (también en la lista de Yahoo Sports)." },
+      { match: "arg-cpv-2026", rank: null, quote: "\"An instant World Cup classic, one of the greatest games in World Cup history.\"" },
     ] },
 
   // ───────────── Champions League / Copa de Europa ─────────────
-  { id: "fft-ucl", name: "FourFourTwo — RANKED! The 25 best Champions League games of all time", outlet: "FourFourTwo",
+  { id: "fft-ucl", cc: "ENG", year: 2026, name: "FourFourTwo — RANKED! The 25 best Champions League games of all time", outlet: "FourFourTwo",
     url: "https://www.fourfourtwo.com/features/ranked-the-25-best-champions-league-games-of-all-time", lang: "en", country: "Reino Unido",
     type: "editorial", scope: "ucl", size: 25, ranked: true, accessed: "2026-11-05",
     note: "Combina la versión republicada en Yahoo (puestos 1-3) con la actualización de abril de 2026 (puestos 6-10 y 21).",
@@ -235,41 +238,41 @@ export const sources = [
       { match: "wer-and-1993", rank: 10, quote: "Puesto 10 — Werder remontó un 0-3." },
       { match: "mon-dep-2003", rank: 21, quote: "Puesto 21 — el partido con más goles de la Champions." },
     ] },
-  { id: "fancast-ucl", name: "Football FanCast — The top 10 Champions League games of all time", outlet: "Football FanCast",
+  { id: "fancast-ucl", cc: "ENG", name: "Football FanCast — The top 10 Champions League games of all time", outlet: "Football FanCast",
     url: "https://www.footballfancast.com/best-champions-league-games-matches-ranked/", lang: "en", country: "Reino Unido",
     type: "blog", scope: "ucl", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "mun-bay-1999", rank: 1, quote: "\"What was at stake in the 1998/99 final and how it was won is what gives it the edge.\"" },
       { match: "bay-bar-2020", rank: 10, quote: "Puesto 10 — jugado sin público." },
     ] },
-  { id: "givemesport-ucl", name: "GiveMeSport — The 13 greatest matches in Champions League history", outlet: "GiveMeSport",
+  { id: "givemesport-ucl", cc: "ENG", name: "GiveMeSport — The 13 greatest matches in Champions League history", outlet: "GiveMeSport",
     url: "https://www.givemesport.com/greatest-champions-league-matches-history-ranked/", lang: "en", country: "Reino Unido",
     type: "editorial", scope: "ucl", size: 13, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "liv-bar-2019", rank: 8, quote: "Puesto 8." },
     ] },
-  { id: "dailymatch-ucl", name: "Daily Match Report — The 25 Best Champions League Matches of All Time (2026)", outlet: "Daily Match Report",
+  { id: "dailymatch-ucl", cc: null, year: 2026, name: "Daily Match Report — The 25 Best Champions League Matches of All Time (2026)", outlet: "Daily Match Report",
     url: "https://dailymatchreport.com/best-champions-league-matches-of-all-time/", lang: "en", country: "Internacional",
     type: "blog", scope: "ucl", size: 25, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "mun-bay-1999", rank: 2, quote: "Puesto 2." },
       { match: "rma-mci-2022", rank: 6, quote: "Puesto 6." },
     ] },
-  { id: "sportsdunia-ucl", name: "Sportsdunia — Top Champions League matches of all time", outlet: "Sportsdunia",
+  { id: "sportsdunia-ucl", cc: "IND", name: "Sportsdunia — Top Champions League matches of all time", outlet: "Sportsdunia",
     url: "https://www.sportsdunia.com/news/top-champions-league-matches-of-all-time-ranking", lang: "en", country: "India",
     type: "blog", scope: "ucl", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "rma-atm-2014", rank: 4, quote: "Puesto 4." },
       { match: "liv-bar-2019", rank: 10, quote: "Puesto 10." },
     ] },
-  { id: "90min-ucl", name: "90min — The best Champions League games of all time", outlet: "90min",
+  { id: "90min-ucl", cc: "ENG", name: "90min — The best Champions League games of all time", outlet: "90min",
     url: "https://www.90min.com/posts/best-champions-league-games-all-time-ranked", lang: "en", country: "Reino Unido",
     type: "editorial", scope: "ucl", size: 30, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "mil-liv-2005", rank: 1, quote: "Número 1." },
       { match: "bay-bar-2020", rank: null, quote: "Incluido." },
     ] },
-  { id: "sky-it-ucl", name: "Sky Sport Italia — Le partite più emozionanti di sempre in Champions", outlet: "Sky Sport",
+  { id: "sky-it-ucl", cc: "ITA", name: "Sky Sport Italia — Le partite più emozionanti di sempre in Champions", outlet: "Sky Sport",
     url: "https://sport.sky.it/calcio/champions-league/champions-league-partite-piu-belle-storia", lang: "it", country: "Italia",
     type: "editorial", scope: "ucl", size: null, ranked: false, accessed: "2026-11-05",
     mentions: [
@@ -277,7 +280,7 @@ export const sources = [
       { match: "rma-psg-2022", rank: null, quote: "Incluido." },
       { match: "mil-liv-2005", rank: null, quote: "\"Una delle più grandi rimonte della storia del calcio.\"" },
     ] },
-  { id: "reddit-soccer", name: "Reddit r/soccer — hilos \"best match you've ever watched\"", outlet: "Reddit",
+  { id: "reddit-soccer", cc: null, year: 2013, name: "Reddit r/soccer — hilos \"best match you've ever watched\"", outlet: "Reddit",
     url: "https://r.datuan.dev/1elh6p", lang: "en", country: "Internacional",
     type: "foro", scope: "todo", size: null, ranked: false, accessed: "2026-11-05",
     note: "Snapshots archivados de hilos de r/soccer; se cuentan los partidos más repetidos.",
@@ -288,13 +291,13 @@ export const sources = [
       { match: "bay-bvb-2013", rank: null, quote: "Mencionado." },
       { match: "arg-eng-1986", rank: null, quote: "Mencionado." },
     ] },
-  { id: "bigsoccer", name: "BigSoccer — The 100 Greatest Games of All Times (hilo)", outlet: "BigSoccer",
+  { id: "bigsoccer", cc: null, name: "BigSoccer — The 100 Greatest Games of All Times (hilo)", outlet: "BigSoccer",
     url: "https://www.bigsoccer.com/threads/the-100-greatest-games-of-all-times.481639/", lang: "en", country: "Internacional",
     type: "foro", scope: "todo", size: null, ranked: false, accessed: "2026-11-05",
     mentions: [
       { match: "rma-ein-1960", rank: null, quote: "Elegido por usuarios del foro." },
     ] },
-  { id: "livejournal-100", name: "ontd_football (LiveJournal) — Top 100: Greatest Matches", outlet: "LiveJournal",
+  { id: "livejournal-100", cc: null, name: "ontd_football (LiveJournal) — Top 100: Greatest Matches", outlet: "LiveJournal",
     url: "https://ontd-football.livejournal.com/1724646.html", lang: "en", country: "Internacional",
     type: "foro", scope: "todo", size: 100, ranked: true, accessed: "2026-11-05",
     mentions: [
@@ -302,33 +305,33 @@ export const sources = [
     ] },
 
   // ───────────── Premier League / Inglaterra ─────────────
-  { id: "fft-pl", name: "FourFourTwo — Ranked! The 10 best Premier League matches EVER", outlet: "FourFourTwo",
+  { id: "fft-pl", cc: "ENG", name: "FourFourTwo — Ranked! The 10 best Premier League matches EVER", outlet: "FourFourTwo",
     url: "https://www.fourfourtwo.com/features/ranked-10-best-premier-league-matches-ever", lang: "en", country: "Reino Unido",
     type: "editorial", scope: "premier", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "liv-new-1996", rank: 3, quote: "\"The finest match of the division's first decade.\"" },
     ] },
-  { id: "talksport-pl", name: "talkSPORT (vía Sportskeeda) — Encuesta a hinchas de la Premier", outlet: "talkSPORT",
+  { id: "talksport-pl", cc: "ENG", name: "talkSPORT (vía Sportskeeda) — Encuesta a hinchas de la Premier", outlet: "talkSPORT",
     url: "https://www.sportskeeda.com/football/the-10-greatest-premier-league-matches-ever", lang: "en", country: "Reino Unido",
     type: "voto-fans", scope: "premier", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "liv-new-1996", rank: 1, quote: "Puesto 1 en la encuesta." },
       { match: "new-ars-2011", rank: 2, quote: "\"The greatest comeback in Premier League history.\"" },
     ] },
-  { id: "pl-official", name: "Premier League — Ten of the best matches in Premier League history", outlet: "Premier League",
+  { id: "pl-official", cc: "ENG", name: "Premier League — Ten of the best matches in Premier League history", outlet: "Premier League",
     url: "https://www.premierleague.com/en/news/4599284/ten-of-the-best-matches-in-premier-league-history", lang: "en", country: "Reino Unido",
     type: "oficial", scope: "premier", size: 10, ranked: false, accessed: "2026-11-05",
     mentions: [
       { match: "liv-new-1996", rank: null, quote: "\"Collymore scored a stoppage-time winner in a seven-goal thriller.\"" },
       { match: "new-ars-2011", rank: null, quote: "Incluido." },
     ] },
-  { id: "times-50", name: "The Times — 50 Greatest Football Matches (Richard Whitehead, 2019)", outlet: "The Times",
+  { id: "times-50", cc: "ENG", year: 2019, name: "The Times — 50 Greatest Football Matches (Richard Whitehead, 2019)", outlet: "The Times",
     url: "https://thehistorypress.co.uk/publication/the-times-50-greatest-football-matches/", lang: "en", country: "Reino Unido",
     type: "libro", scope: "todo", size: 50, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "ars-mun-1999", rank: 38, quote: "Puesto 38 (según Wikipedia)." },
     ] },
-  { id: "guardian-smyth", name: "The Guardian (Rob Smyth, citado en Wikipedia)", outlet: "The Guardian",
+  { id: "guardian-smyth", cc: "ENG", name: "The Guardian (Rob Smyth, citado en Wikipedia)", outlet: "The Guardian",
     url: "https://en.wikipedia.org/wiki/Arsenal_1%E2%80%932_Manchester_United_(1999)", lang: "en", country: "Reino Unido",
     type: "editorial", scope: "inglaterra", size: null, ranked: false, accessed: "2026-11-05",
     mentions: [
@@ -336,7 +339,7 @@ export const sources = [
     ] },
 
   // ───────────── Copa Libertadores ─────────────
-  { id: "espn-libertadores", name: "ESPN — Las 10 mejores finales en la historia de la Libertadores", outlet: "ESPN",
+  { id: "espn-libertadores", cc: "ARG", name: "ESPN — Las 10 mejores finales en la historia de la Libertadores", outlet: "ESPN",
     url: "https://www.espn.com.ar/futbol/copa-libertadores/nota/_/id/6856939/las-10-mejores-finales-historia", lang: "es", country: "Argentina",
     type: "editorial", scope: "libertadores", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
@@ -344,7 +347,7 @@ export const sources = [
       { match: "est-cru-2009", rank: null, quote: "Incluida." },
       { match: "est-pal-1968", rank: null, quote: "Incluida." },
     ] },
-  { id: "goal-libertadores", name: "Goal — Las 10 mejores finales de la historia de la Copa Libertadores", outlet: "Goal",
+  { id: "goal-libertadores", cc: "ARG", name: "Goal — Las 10 mejores finales de la historia de la Copa Libertadores", outlet: "Goal",
     url: "https://www.goal.com/es-ar/noticias/las-10-mejores-finales-de-la-historia-de-la-copa-libertadores/1g9alu8ehl68s1jm4pwz78etis", lang: "es", country: "Argentina",
     type: "editorial", scope: "libertadores", size: 10, ranked: true, accessed: "2026-11-05",
     mentions: [
@@ -353,23 +356,77 @@ export const sources = [
       { match: "pen-ame-1987", rank: null, quote: "Incluida." },
       { match: "ind-col-1973", rank: null, quote: "\"Se resolvió en un tercer partido en Montevideo tras dos empates.\"" },
     ] },
-  { id: "365-libertadores", name: "365Scores — Todas las finales de Copa Libertadores", outlet: "365Scores",
+  { id: "365-libertadores", cc: null, name: "365Scores — Todas las finales de Copa Libertadores", outlet: "365Scores",
     url: "https://www.365scores.com/es/news/todas-las-finales-de-copa-libertadores/", lang: "es", country: "Internacional",
     type: "editorial", scope: "libertadores", size: null, ranked: true, accessed: "2026-11-05",
     mentions: [
       { match: "riv-boc-2018", rank: 1, quote: "La ubica como la mejor final de la historia del torneo." },
     ] },
-  { id: "onefootball-lib", name: "OneFootball / Señal Colombia — Las mejores finales de la Libertadores", outlet: "OneFootball",
+  { id: "onefootball-lib", cc: null, name: "OneFootball / Señal Colombia — Las mejores finales de la Libertadores", outlet: "OneFootball",
     url: "https://onefootball.com/es/noticias/las-6-mejores-finales-en-la-historia-de-la-copa-libertadores-29515591", lang: "es", country: "Internacional",
     type: "editorial", scope: "libertadores", size: 6, ranked: false, accessed: "2026-11-05",
     mentions: [
       { match: "riv-boc-2018", rank: null, quote: "Incluida." },
       { match: "pen-riv-1966", rank: null, quote: "Incluida." },
     ] },
-  { id: "pagina-millonaria", name: "La Página Millonaria — Cómo recuerdan periodistas del mundo la final de Madrid", outlet: "La Página Millonaria",
+  { id: "pagina-millonaria", cc: "ARG", name: "La Página Millonaria — Cómo recuerdan periodistas del mundo la final de Madrid", outlet: "La Página Millonaria",
     url: "https://lapaginamillonaria.com/riverplate/River-vs-Boca-por-Copa-Libertadores-2018-como-recuerdan-periodistas-del-mundo-esa-gran-final-20210904-0001.html", lang: "es", country: "Argentina",
     type: "blog", scope: "libertadores", size: null, ranked: false, accessed: "2026-11-05",
     mentions: [
       { match: "riv-boc-2018", rank: null, quote: "\"Era la final de todos los tiempos.\"" },
+    ] },
+
+  // ───────────── Voz popular: encuestas y ratings de hinchas (agregadas en la v2) ─────────────
+  { id: "sky-super6-poll", cc: "ENG", name: "Sky Sports Soccer Saturday Super 6 — ¿Qué partido te hubiera gustado ver en vivo? (1.181 personas)", outlet: "Sky Sports (vía FourFourTwo)",
+    url: "https://www.fourfourtwo.com/news/istanbul-thriller-tops-1966-wembley-win-poll", lang: "en", country: "Reino Unido",
+    type: "voto-fans", scope: "todo", size: 4, ranked: true, accessed: "2026-11-05",
+    note: "Encuesta cerrada con opciones predefinidas. Estambul 50%, Camp Nou 1999 25%, Wembley 1966 21%, México 1970 1%.",
+    mentions: [
+      { match: "mil-liv-2005", rank: 1, quote: "50% de los votos." },
+      { match: "mun-bay-1999", rank: 2, quote: "25% de los votos." },
+      { match: "eng-frg-1966", rank: 3, quote: "21% de los votos." },
+      { match: "bra-ita-1970", rank: 4, quote: "1% de los votos." },
+    ] },
+  { id: "sky-comeback-poll", cc: "ENG", year: 2019, name: "Sky Sports — Encuesta: la mayor remontada de la Champions", outlet: "Sky Sports",
+    url: "https://www.skysports.com/football/news/11095/11716455/rafa-benitez-liverpools-istanbul-comeback-trumps-all-and-sky-sports-poll-proves-it", lang: "en", country: "Reino Unido",
+    type: "voto-fans", scope: "ucl", size: null, ranked: true, accessed: "2026-11-05",
+    note: "Resultados parciales al momento de la publicación.",
+    mentions: [
+      { match: "mil-liv-2005", rank: 1, quote: "33% de los votos." },
+      { match: "liv-bar-2019", rank: 2, quote: "21% de los votos." },
+    ] },
+  { id: "ladbrokes-poll", cc: "ENG", name: "Ladbrokes — Encuesta: la mejor final de Champions", outlet: "Ladbrokes",
+    url: "https://news.ladbrokes.com/polls/guessed-itliverpool-epic-voted-best-champions-league-final.html", lang: "en", country: "Reino Unido",
+    type: "voto-fans", scope: "ucl", size: null, ranked: true, accessed: "2026-11-05",
+    mentions: [
+      { match: "mil-liv-2005", rank: 1, quote: "59% de los votos." },
+      { match: "mun-bay-1999", rank: 2, quote: "Segundo lugar." },
+    ] },
+  { id: "sportbible-wc2026", cc: "ENG", year: 2026, name: "SPORTbible — 14.000 hinchas calificaron cada partido del Mundial 2026", outlet: "SPORTbible",
+    url: "https://www.sportbible.com/football/football-news/fifa-world-cup/fans-rank-every-world-cup-game-like-a-tv-show-one-match-stands-clear-576060-20260702", lang: "en", country: "Reino Unido",
+    type: "voto-fans", scope: "mundial-2026", size: null, ranked: true, accessed: "2026-11-05",
+    note: "Rating tipo serie de TV (1 a 10), no una elección entre partidos.",
+    mentions: [
+      { match: "arg-cpv-2026", rank: 1, quote: "El 87% de los hinchas le puso 10/10." },
+    ] },
+  { id: "imdb-wc2022", cc: null, year: 2022, name: "IMDb — Lista de usuarios: Most Exciting 2022 FIFA World Cup Match", outlet: "IMDb (lista de usuarios)",
+    url: "https://www.imdb.com/list/ls566480916/", lang: "en", country: "Internacional",
+    type: "foro", scope: "mundial-2022", size: null, ranked: true, accessed: "2026-11-05",
+    mentions: [
+      { match: "arg-fra-2022", rank: 1, quote: "\"Widely considered the best match of the tournament.\"" },
+    ] },
+
+  // ───────────── Más voz experta (v2) ─────────────
+  { id: "flashscore-ucl-finals", cc: null, name: "Flashscore — From La Decima to Istanbul: The Best Champions League Finals Ever", outlet: "Flashscore",
+    url: "https://www.flashscore.com/news/soccer-best-champions-league-finals-all-time-list/hMPff1ad/", lang: "en", country: "Internacional",
+    type: "editorial", scope: "ucl", size: 10, ranked: true, accessed: "2026-11-05",
+    mentions: [
+      { match: "mil-liv-2005", rank: 1, quote: "\"Considered the greatest Champions League final of all time.\"" },
+    ] },
+  { id: "ringer-2022", cc: "US", year: 2022, name: "The Ringer — The 2022 World Cup Exit Survey (panel de periodistas)", outlet: "The Ringer",
+    url: "https://www.theringer.com/2022/12/20/soccer/world-cup-final-2022-argentina-france-exit-survey-takeaways", lang: "en", country: "EE.UU.",
+    type: "encuesta-expertos", scope: "todo", size: null, ranked: false, accessed: "2026-11-05",
+    mentions: [
+      { match: "arg-fra-2022", rank: null, quote: "\"A game for the ages\"; uno de los panelistas la llama \"one of the greatest games of all time\"." },
     ] },
 ];

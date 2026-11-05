@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>El Mejor Partido</title>
-  <meta name="description" content="Ranking de los mejores partidos de fútbol profesional de la historia, construido a partir de decenas de rankings, encuestas, foros y estadísticas en varios idiomas.">
+  <meta name="description" content="Ranking de los mejores partidos de fútbol de la historia construido como un problema de juicio colectivo: expertos e hinchas con el mismo peso y corrección explícita de sesgos sociales y de memoria.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Archivo+Narrow:wght@600;700&display=swap" rel="stylesheet">
@@ -13,17 +13,18 @@
 <body>
   <header class="hero">
     <div class="wrap">
-      <p class="eyebrow">Ranking agregado · actualizado <span id="updated"></span></p>
+      <p class="eyebrow">Juicio colectivo · actualizado <span id="updated"></span></p>
       <h1>El mejor partido<br>de la historia</h1>
-      <p class="lede">Juntamos lo que dicen medios, encuestas de expertos, votaciones de hinchas, foros y libros —en español, inglés, portugués, italiano y francés— y lo combinamos con datos objetivos de cada partido para construir un ranking transparente.</p>
+      <p class="lede">No existe una respuesta objetiva, pero sí puede estimarse. Escuchamos a <strong>expertos e hinchas con el mismo peso</strong>, en cinco idiomas, y corregimos los sesgos que la psicología social conoce bien: la identidad de grupo, el contagio entre fuentes, la memoria reciente y las muestras chicas.</p>
       <dl class="stats" id="stats"></dl>
     </div>
   </header>
 
   <nav class="tabs wrap" role="tablist">
     <button role="tab" aria-selected="true" data-tab="ranking">Ranking</button>
+    <button role="tab" aria-selected="false" data-tab="voces">Expertos vs Hinchas</button>
     <button role="tab" aria-selected="false" data-tab="fuentes">Fuentes</button>
-    <button role="tab" aria-selected="false" data-tab="metodo">Metodología</button>
+    <button role="tab" aria-selected="false" data-tab="metodo">Fundamentos</button>
   </nav>
 
   <main class="wrap">
@@ -34,41 +35,53 @@
             <label for="q">Buscar</label>
             <input id="q" type="search" placeholder="Equipo, apodo, año…">
           </div>
-          <div class="ctrl">
-            <label for="comp">Competición</label>
-            <select id="comp">
-              <option value="">Todas</option>
-              <option value="mundial">Copa del Mundo</option>
-              <option value="ucl">Copa de Europa / Champions</option>
-              <option value="libertadores">Copa Libertadores</option>
-              <option value="eurocopa">Eurocopa</option>
-              <option value="liga">Ligas</option>
-              <option value="copa-nacional">Copas nacionales</option>
-              <option value="amistoso">Amistosos</option>
-            </select>
-          </div>
-          <div class="ctrl">
-            <label for="era">Época</label>
-            <select id="era">
-              <option value="">Todas</option>
-              <option value="1930-1959">1930 – 1959</option>
-              <option value="1960-1979">1960 – 1979</option>
-              <option value="1980-1999">1980 – 1999</option>
-              <option value="2000-2014">2000 – 2014</option>
-              <option value="2015-2099">2015 – hoy</option>
-            </select>
+          <div class="row2">
+            <div class="ctrl">
+              <label for="comp">Competición</label>
+              <select id="comp">
+                <option value="">Todas</option>
+                <option value="mundial">Copa del Mundo</option>
+                <option value="ucl">Copa de Europa / Champions</option>
+                <option value="libertadores">Copa Libertadores</option>
+                <option value="eurocopa">Eurocopa</option>
+                <option value="liga">Ligas</option>
+                <option value="copa-nacional">Copas nacionales</option>
+                <option value="amistoso">Amistosos</option>
+              </select>
+            </div>
+            <div class="ctrl">
+              <label for="era">Época</label>
+              <select id="era">
+                <option value="">Todas</option>
+                <option value="1930-1959">1930 – 1959</option>
+                <option value="1960-1979">1960 – 1979</option>
+                <option value="1980-1999">1980 – 1999</option>
+                <option value="2000-2014">2000 – 2014</option>
+                <option value="2015-2099">2015 – hoy</option>
+              </select>
+            </div>
           </div>
 
-          <details class="weights" open>
-            <summary>Ajustar el algoritmo</summary>
-            <div class="ctrl">
-              <label for="w-spec"><span>Opinión / espectáculo</span> <output id="w-spec-out">80 / 20</output></label>
-              <input id="w-spec" type="range" min="0" max="100" step="5" value="20">
-              <p class="hint">0 = sólo lo que dicen las fuentes · 100 = sólo goles, remontada, instancia y dramatismo.</p>
-            </div>
-            <div id="type-weights"></div>
-            <button id="reset" class="link">Restablecer valores</button>
+          <div class="ctrl voice-ctrl">
+            <label for="w-voice"><span>Balance de voces</span> <output id="w-voice-out"></output></label>
+            <input id="w-voice" type="range" min="0" max="100" step="5" value="50">
+            <div class="scale"><span>Sólo expertos</span><span>Sólo hinchas</span></div>
+          </div>
+          <div class="ctrl">
+            <label for="w-int"><span>Intensidad emocional</span> <output id="w-int-out"></output></label>
+            <input id="w-int" type="range" min="0" max="50" step="5" value="20">
+            <p class="hint">Cuánto pesan los datos del propio partido (goles, remontada, clímax tardío) frente a la opinión.</p>
+          </div>
+
+          <details class="group" id="bias-group" open>
+            <summary>Correcciones de sesgo</summary>
+            <div id="corrections"></div>
           </details>
+          <details class="group" id="type-group">
+            <summary>Peso por tipo de fuente</summary>
+            <div id="type-weights"></div>
+          </details>
+          <button id="reset" class="link">Restablecer valores</button>
         </aside>
 
         <div>
@@ -78,34 +91,73 @@
       </div>
     </section>
 
+    <section id="tab-voces" class="panel" hidden>
+      <h2>¿Opinan lo mismo expertos e hinchas?</h2>
+      <p class="muted narrow">Cada voz se mide por separado, con sus propias fuentes. Cuando dos métodos independientes llegan al mismo resultado, la conclusión es más sólida (<em>validez convergente</em>). Cuando divergen, la diferencia también es información.</p>
+      <div id="voices"></div>
+    </section>
+
     <section id="tab-fuentes" class="panel" hidden>
       <h2>Fuentes consultadas</h2>
-      <p class="muted">Cada fuente indica qué partidos menciona y, cuando se pudo confirmar, en qué puesto. ¿Falta una? Se agregan en <code>data/sources.js</code>.</p>
+      <p class="muted narrow">Cada fuente indica qué partidos menciona y, cuando se pudo confirmar, en qué puesto. Se agregan en <code>data/sources.js</code>.</p>
       <div id="sources" class="sources"></div>
     </section>
 
     <section id="tab-metodo" class="panel prose" hidden>
-      <h2>Cómo se calcula</h2>
-      <p>No existe un ranking oficial del “mejor partido de la historia”. Lo que sí existen son decenas de listas, encuestas y discusiones que, leídas juntas, muestran un consenso bastante claro. Este sitio las agrega con reglas simples y públicas.</p>
-      <h3>1. Consenso de fuentes (80% por defecto)</h3>
-      <p>Cada vez que una fuente incluye un partido, suma puntos:</p>
+      <h2>Fundamentos</h2>
+      <p>“El mejor partido de la historia” no es un dato: es un <strong>juicio colectivo</strong>. Cada lista, encuesta o hilo de foro es una medición imperfecta de ese juicio, hecha por personas con memorias, identidades y grupos de referencia distintos. Por eso el problema se trata con las herramientas de la psicología social y la psicometría: agregar muchos juicios, cuidar que sean independientes y corregir los sesgos sistemáticos que ya conocemos.</p>
+
+      <h3>1. Dos voces, mismo peso</h3>
+      <p>Separamos la <strong>voz experta</strong> (periodistas, encuestas a especialistas, libros, organismos) de la <strong>voz popular</strong> (votaciones de hinchas, ratings, foros). Cada una se puntúa y normaliza por separado, y luego se combinan 50/50.</p>
+      <p>¿Por qué no simplemente sumar todo? Porque hay muchas más listas de periodistas que encuestas de hinchas. Si se suman, la voz experta gana por volumen, no por mérito. Los expertos tampoco son jueces neutrales: comparten redacciones, se leen entre sí y tienen sus propios sesgos (Tetlock, 2005). Los hinchas aportan la experiencia vivida, que es justamente lo que hace memorable un partido.</p>
+      <p>La votación de hinchas tiene el mismo peso por fuente (1,3) que la encuesta de expertos. Los foros pesan menos que las votaciones estructuradas, y los blogs menos que los medios, porque son mediciones menos confiables dentro de cada voz.</p>
+
+      <h3>2. Sabiduría de las multitudes… si se cumplen sus condiciones</h3>
+      <p>Galton (1907) mostró que el promedio de 787 estimaciones del peso de un buey era casi exacto, aunque ninguna individual lo fuera. Surowiecki (2004) resumió las condiciones para que eso funcione: <strong>diversidad</strong>, <strong>independencia</strong> y <strong>descentralización</strong>. Cada corrección de este modelo protege una de esas condiciones.</p>
+
+      <div class="principles" id="principles"></div>
+
+      <h3>4. Intensidad emocional: la regla pico-final</h3>
+      <p>Recordamos una experiencia por su momento más intenso y por cómo terminó, no por su duración ni su promedio (Fredrickson y Kahneman, 1993). Por eso el índice de intensidad incluye el <strong>clímax tardío</strong> (goles decisivos en los últimos minutos) junto con los goles, la remontada, lo que estaba en juego y la prórroga o los penales. Los eventos de alta carga emocional, además, se fijan como <em>recuerdos flash</em> que se transmiten durante décadas (Brown y Kulik, 1977).</p>
+
+      <h3>5. Validez de constructo: medir lo que se quiere medir</h3>
       <ul>
-        <li><strong>Peso del tipo de fuente:</strong> encuesta de expertos 1,3 · libro 1,1 · medio/editorial 1,0 · organismo oficial 1,0 · votación de hinchas 0,9 · foro 0,7 · blog 0,5.</li>
-        <li><strong>Posición en la lista:</strong> el puesto <em>r</em> en una lista de <em>N</em> vale entre 1 y 2 puntos (<code>1 + (N − r + 1) / N</code>). Si aparece sin posición conocida, vale 1,4.</li>
-        <li><strong>Número 1:</strong> +0,5 extra cuando la fuente lo declara el mejor.</li>
-        <li><strong>Alcance:</strong> las listas de “todo el fútbol” multiplican ×1,25 frente a las de una sola competición.</li>
-        <li><strong>Diversidad cultural:</strong> +8% por cada idioma adicional en el que se lo menciona.</li>
+        <li>Se excluyen las encuestas sobre <strong>el mejor gol</strong> o <strong>el mejor jugador</strong>: miden otra cosa. Que el gol de Maradona a Inglaterra gane una encuesta de goles no prueba que el partido haya sido el mejor.</li>
+        <li>Las listas de <strong>“partidos más importantes”</strong> (como la del New York Times) se incluyen, pero se señala que su criterio es el impacto histórico y no la calidad del juego.</li>
+        <li>Se excluyen las audiencias de TV: miden alcance, no valoración.</li>
+        <li>Se excluye el fútbol amateur (por ejemplo, el SC Jülich – TSV Marl-Hüls de 1972 que 11FREUNDE llama “el partido más grande de todos los tiempos”).</li>
       </ul>
-      <h3>2. Índice de espectáculo (20% por defecto)</h3>
-      <p>Datos objetivos del partido: goles (30%), si hubo remontada (25%), la instancia —una final vale más que un partido de liga— (30%) y dramatismo: prórroga y penales (15%).</p>
-      <h3>3. Limitaciones</h3>
+
+      <h3>6. Dato faltante no es cero</h3>
+      <p>Si ninguna fuente de una voz <em>podía</em> haber mencionado un partido (por ejemplo, una lista de 2007 frente a un partido de 2022), ese silencio no es un voto en contra. En ese caso el valor de esa voz se imputa con el de la otra y se avisa en la ficha (Rubin, 1976). Para eso cada fuente registra, cuando se conoce, su año de publicación y su alcance.</p>
+
+      <h3>7. Sesgos que reconocemos pero no corregimos</h3>
       <ul>
-        <li>Hay un sesgo hacia el fútbol europeo y anglosajón: es donde más listas se publican.</li>
-        <li>Hay sesgo de recencia: los partidos recientes (como la final de 2022) aparecen en más listas nuevas.</li>
-        <li>Algunas posiciones no se pudieron confirmar porque las páginas originales no estaban accesibles; esas menciones cuentan como “incluido sin posición”.</li>
-        <li>Se excluye el fútbol amateur (por ejemplo, el SC Jülich – TSV Marl-Hüls de 1972 que el libro de 11FREUNDE llama “el partido más grande de todos los tiempos”).</li>
+        <li><strong>Nostalgia y “pico de reminiscencia”:</strong> recordamos con más intensidad lo vivido entre los 10 y los 30 años (Rubin, Rahhal y Poon, 1998), y tendemos a recordar el pasado mejor de lo que fue (<em>rosy retrospection</em>; Mitchell et al., 1997). Esto favorece a los partidos que vieron de jóvenes quienes hoy escriben. No lo corregimos porque no conocemos la edad de quienes votan; en parte se compensa con el sesgo de recencia.</li>
+        <li><strong>Sesgo de supervivencia digital:</strong> los partidos anteriores a internet tienen menos listas en línea.</li>
+        <li><strong>Sesgo anglosajón:</strong> la mayoría de las listas se publican en inglés. La corrección endogrupal lo atenúa, pero no lo elimina. Hacen falta más encuestas de hinchas sudamericanos, africanos y asiáticos.</li>
+        <li><strong>Autoselección:</strong> las encuestas online no son muestras representativas; responde quien quiere.</li>
       </ul>
-      <p>Todo es ajustable desde el panel “Ajustar el algoritmo” en la pestaña Ranking.</p>
+
+      <h3>Referencias</h3>
+      <ol class="refs">
+        <li>Bar-Hillel, M. (1980). The base-rate fallacy in probability judgments. <em>Acta Psychologica, 44</em>(3), 211–233.</li>
+        <li>Bikhchandani, S., Hirshleifer, D. y Welch, I. (1992). A theory of fads, fashion, custom, and cultural change as informational cascades. <em>Journal of Political Economy, 100</em>(5), 992–1026.</li>
+        <li>Brown, R. y Kulik, J. (1977). Flashbulb memories. <em>Cognition, 5</em>(1), 73–99.</li>
+        <li>Campbell, D. T. y Fiske, D. W. (1959). Convergent and discriminant validation by the multitrait-multimethod matrix. <em>Psychological Bulletin, 56</em>(2), 81–105.</li>
+        <li>Fredrickson, B. L. y Kahneman, D. (1993). Duration neglect in retrospective evaluations of affective episodes. <em>Journal of Personality and Social Psychology, 65</em>(1), 45–55.</li>
+        <li>Galton, F. (1907). Vox populi. <em>Nature, 75</em>, 450–451.</li>
+        <li>Hastorf, A. H. y Cantril, H. (1954). They saw a game: A case study. <em>Journal of Abnormal and Social Psychology, 49</em>(1), 129–134.</li>
+        <li>Lorenz, J., Rauhut, H., Schweitzer, F. y Helbing, D. (2011). How social influence can undermine the wisdom of crowd effect. <em>PNAS, 108</em>(22), 9020–9025.</li>
+        <li>Mitchell, T. R., Thompson, L., Peterson, E. y Cronk, R. (1997). Temporal adjustments in the evaluation of events: The “rosy view”. <em>Journal of Experimental Social Psychology, 33</em>(4), 421–448.</li>
+        <li>Rubin, D. B. (1976). Inference and missing data. <em>Biometrika, 63</em>(3), 581–592.</li>
+        <li>Rubin, D. C., Rahhal, T. A. y Poon, L. W. (1998). Things learned in early adulthood are remembered best. <em>Memory &amp; Cognition, 26</em>(1), 3–19.</li>
+        <li>Surowiecki, J. (2004). <em>The Wisdom of Crowds</em>. Doubleday.</li>
+        <li>Tajfel, H. y Turner, J. C. (1979). An integrative theory of intergroup conflict. En W. G. Austin y S. Worchel (Eds.), <em>The Social Psychology of Intergroup Relations</em> (pp. 33–47). Brooks/Cole.</li>
+        <li>Tetlock, P. E. (2005). <em>Expert Political Judgment: How Good Is It? How Can We Know?</em> Princeton University Press.</li>
+        <li>Tversky, A. y Kahneman, D. (1971). Belief in the law of small numbers. <em>Psychological Bulletin, 76</em>(2), 105–110.</li>
+        <li>Tversky, A. y Kahneman, D. (1973). Availability: A heuristic for judging frequency and probability. <em>Cognitive Psychology, 5</em>(2), 207–232.</li>
+      </ol>
     </section>
   </main>
 
