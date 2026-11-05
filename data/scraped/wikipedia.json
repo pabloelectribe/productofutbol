@@ -1,0 +1,403 @@
+{
+  "collectedAt": "2026-11-05T18:49:13.861Z",
+  "window": [
+    "20231101",
+    "20261101"
+  ],
+  "matches": {
+    "arg-fra-2022": {
+      "langs": {
+        "en": {
+          "title": "2022 FIFA World Cup final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 37764
+        },
+        "es": {
+          "title": "Final de la Copa Mundial de Fútbol de 2022",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 950
+        }
+      },
+      "medianMonthly": 37764
+    },
+    "ita-frg-1970": {
+      "langs": {
+        "en": {
+          "title": "Italy v West Germany (1970 FIFA World Cup)",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 1476
+        },
+        "it": {
+          "title": "Partita del secolo",
+          "resolvedBy": "redirección",
+          "months": 37,
+          "medianMonthly": 2308
+        }
+      },
+      "medianMonthly": 1476
+    },
+    "bra-ita-1970": {
+      "langs": {
+        "en": {
+          "title": "1970 FIFA World Cup final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 5869
+        }
+      },
+      "medianMonthly": 5869
+    },
+    "ita-bra-1982": {
+      "langs": {
+        "en": {
+          "title": "Italy v Brazil (1982 FIFA World Cup)",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 1333
+        }
+      },
+      "medianMonthly": 1333
+    },
+    "arg-eng-1986": {
+      "langs": {
+        "en": {
+          "title": "Argentina v England (1986 FIFA World Cup)",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 6238
+        }
+      },
+      "medianMonthly": 6238
+    },
+    "uru-bra-1950": {
+      "langs": {
+        "en": {
+          "title": "Uruguay v Brazil (1950 FIFA World Cup)",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 7534
+        },
+        "es": {
+          "title": "Maracanazo",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 5651
+        }
+      },
+      "medianMonthly": 7534
+    },
+    "frg-hun-1954": {
+      "langs": {
+        "en": {
+          "title": "1954 FIFA World Cup final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 5636
+        }
+      },
+      "medianMonthly": 5636
+    },
+    "eng-frg-1966": {
+      "langs": {
+        "en": {
+          "title": "1966 FIFA World Cup final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 17166
+        }
+      },
+      "medianMonthly": 17166
+    },
+    "fra-frg-1982": {
+      "langs": {
+        "en": {
+          "title": "West Germany v France (1982 FIFA World Cup)",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 1204
+        }
+      },
+      "medianMonthly": 1204
+    },
+    "bra-ger-2014": {
+      "langs": {
+        "en": {
+          "title": "Brazil v Germany (2014 FIFA World Cup)",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 24686
+        }
+      },
+      "medianMonthly": 24686
+    },
+    "swe-bra-1958": {
+      "langs": {
+        "en": {
+          "title": "1958 FIFA World Cup final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 7317
+        }
+      },
+      "medianMonthly": 7317
+    },
+    "frg-ned-1974": {
+      "langs": {
+        "en": {
+          "title": "1974 FIFA World Cup final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 6650
+        }
+      },
+      "medianMonthly": 6650
+    },
+    "uru-arg-1930": {
+      "langs": {
+        "en": {
+          "title": "1930 FIFA World Cup final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 4396
+        }
+      },
+      "medianMonthly": 4396
+    },
+    "arg-ned-1978": {
+      "langs": {
+        "en": {
+          "title": "1978 FIFA World Cup final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 6375
+        }
+      },
+      "medianMonthly": 6375
+    },
+    "mil-liv-2005": {
+      "langs": {
+        "en": {
+          "title": "2005 UEFA Champions League final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 30111
+        },
+        "es": {
+          "title": "Final de la Liga de Campeones de la UEFA 2004-05",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 4766
+        }
+      },
+      "medianMonthly": 30111
+    },
+    "mun-bay-1999": {
+      "langs": {
+        "en": {
+          "title": "1999 UEFA Champions League final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 20098
+        }
+      },
+      "medianMonthly": 20098
+    },
+    "bar-psg-2017": {
+      "langs": {
+        "en": {
+          "title": "FC Barcelona 6–1 Paris Saint-Germain FC",
+          "resolvedBy": "redirección",
+          "months": 23,
+          "medianMonthly": 12177
+        }
+      },
+      "medianMonthly": 12177
+    },
+    "rma-ein-1960": {
+      "langs": {
+        "en": {
+          "title": "1960 European Cup final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 2879
+        }
+      },
+      "medianMonthly": 2879
+    },
+    "rma-rei-1956": {
+      "langs": {
+        "en": {
+          "title": "1956 European Cup final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 2061
+        }
+      },
+      "medianMonthly": 2061
+    },
+    "rma-atm-2014": {
+      "langs": {
+        "en": {
+          "title": "2014 UEFA Champions League final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 19581
+        }
+      },
+      "medianMonthly": 19581
+    },
+    "bay-bvb-2013": {
+      "langs": {
+        "en": {
+          "title": "2013 UEFA Champions League final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 16138
+        }
+      },
+      "medianMonthly": 16138
+    },
+    "mil-bar-1994": {
+      "langs": {
+        "en": {
+          "title": "1994 UEFA Champions League final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 8516
+        }
+      },
+      "medianMonthly": 8516
+    },
+    "riv-boc-2018": {
+      "langs": {
+        "en": {
+          "title": "2018 Copa Libertadores finals",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 2266
+        },
+        "es": {
+          "title": "Final de la Copa Libertadores 2018",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 18
+        }
+      },
+      "medianMonthly": 2266
+    },
+    "est-cru-2009": {
+      "langs": {
+        "en": {
+          "title": "2009 Copa Libertadores finals",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 279
+        }
+      },
+      "medianMonthly": 279
+    },
+    "flu-ldu-2008": {
+      "langs": {
+        "en": {
+          "title": "2008 Copa Libertadores finals",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 396
+        }
+      },
+      "medianMonthly": 396
+    },
+    "pen-ame-1987": {
+      "langs": {
+        "en": {
+          "title": "1987 Copa Libertadores finals",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 184
+        }
+      },
+      "medianMonthly": 184
+    },
+    "ind-col-1973": {
+      "langs": {
+        "en": {
+          "title": "1973 Copa Libertadores finals",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 149
+        }
+      },
+      "medianMonthly": 149
+    },
+    "est-pal-1968": {
+      "langs": {
+        "en": {
+          "title": "1968 Copa Libertadores finals",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 124
+        }
+      },
+      "medianMonthly": 124
+    },
+    "pen-riv-1966": {
+      "langs": {
+        "en": {
+          "title": "1966 Copa Libertadores finals",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 177
+        }
+      },
+      "medianMonthly": 177
+    },
+    "liv-new-1996": {
+      "langs": {
+        "en": {
+          "title": "Liverpool F.C. 4–3 Newcastle United F.C. (1996)",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 898
+        }
+      },
+      "medianMonthly": 898
+    },
+    "ars-mun-1999": {
+      "langs": {
+        "en": {
+          "title": "Arsenal 1–2 Manchester United (1999)",
+          "resolvedBy": "exacto",
+          "months": 35,
+          "medianMonthly": 769
+        }
+      },
+      "medianMonthly": 769
+    },
+    "fra-ita-2000": {
+      "langs": {
+        "en": {
+          "title": "UEFA Euro 2000 final",
+          "resolvedBy": "exacto",
+          "months": 37,
+          "medianMonthly": 4261
+        }
+      },
+      "medianMonthly": 4261
+    },
+    "eng-hun-1953": {
+      "langs": {
+        "en": {
+          "title": "Match of the Century (1953 England v Hungary football match)",
+          "resolvedBy": "redirección",
+          "months": 37,
+          "medianMonthly": 1673
+        }
+      },
+      "medianMonthly": 1673
+    }
+  },
+  "revalidatedAt": "2026-11-05T18:49:36.089Z"
+}
