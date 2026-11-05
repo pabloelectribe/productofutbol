@@ -1,1 +1,13 @@
-{"type":"module"}
+{
+  "name": "productofutbol",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "test": "node scripts/test-scraper.mjs && node scripts/ranking.mjs 5",
+    "scrape:reddit": "node scraper/reddit.mjs",
+    "scrape:bluesky": "node scraper/bluesky.mjs",
+    "scrape:wikipedia": "node scraper/wikipedia.mjs",
+    "scrape": "node scraper/reddit.mjs; node scraper/wikipedia.mjs; node scraper/bluesky.mjs; node scraper/build.mjs"
+  }
+}

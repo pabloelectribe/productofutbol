@@ -35,7 +35,10 @@
 //      goles 25% · remontada 20% · lo que estaba en juego 25%
 //      clímax tardío 20% · prórroga/penales 10%
 //
-// 5) FINAL = (1 − i) × consenso + i × intensidad, escala 0..100 (i = 20% por defecto).
+// 5) MEMORIA COLECTIVA (opcional, 0% por defecto): visitas sostenidas en Wikipedia.
+//    Mide atención, no valoración; por eso no entra salvo que se la active.
+//
+// 6) FINAL = (1 − i − w) × consenso + i × intensidad + w × memoria, escala 0..100.
 
 export const VOICES = {
   experta: { label: "Voz experta", short: "Expertos" },
@@ -49,6 +52,7 @@ export const SOURCE_TYPES = {
   "oficial":           { label: "Organismo oficial",    voice: "experta", weight: 1.0 },
   "blog":              { label: "Blog / sitio menor",   voice: "experta", weight: 0.5 },
   "voto-fans":         { label: "Votación de hinchas",  voice: "popular", weight: 1.3 },
+  "conversacion":      { label: "Conversación orgánica (scraping)", voice: "popular", weight: 1.0 },
   "foro":              { label: "Foro / comunidad",     voice: "popular", weight: 0.7 },
 };
 
@@ -68,6 +72,8 @@ export const CORRECTIONS = {
 export const DEFAULTS = {
   popularShare: 0.5,
   intensityWeight: 0.2,
+  memoryWeight: 0,
+  memory: {},
   unrankedFactor: 1.4,
   numberOneBonus: 0.5,
   globalScopeBoost: 1.25,
@@ -194,7 +200,11 @@ export function computeRanking(matches, sources, opts = {}) {
     const p = P.imputed ? E.score : P.score;
     r.consensus = (1 - share) * e + share * p;
     r.intensity = intensity(r.match);
-    r.score = 100 * ((1 - o.intensityWeight) * r.consensus + o.intensityWeight * r.intensity);
+    // memoria colectiva (Wikipedia): si no hay dato, se imputa con el consenso
+    r.memory = o.memory[r.match.id] || null;
+    const mem = r.memory ? r.memory.score : r.consensus;
+    const wC = Math.max(0, 1 - o.intensityWeight - o.memoryWeight);
+    r.score = 100 * (wC * r.consensus + o.intensityWeight * r.intensity + o.memoryWeight * mem);
     r.langs = new Set([...E.langs, ...P.langs]);
     // validez convergente: ¿las dos voces, medidas por separado, señalan lo mismo?
     r.agreement =

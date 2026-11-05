@@ -72,6 +72,11 @@
             <input id="w-int" type="range" min="0" max="50" step="5" value="20">
             <p class="hint">Cuánto pesan los datos del propio partido (goles, remontada, clímax tardío) frente a la opinión.</p>
           </div>
+          <div class="ctrl">
+            <label for="w-mem"><span>Memoria colectiva</span> <output id="w-mem-out"></output></label>
+            <input id="w-mem" type="range" min="0" max="30" step="5" value="0">
+            <p class="hint">Visitas sostenidas en Wikipedia. Mide atención, no valoración: por eso empieza en 0.</p>
+          </div>
 
           <details class="group" id="bias-group" open>
             <summary>Correcciones de sesgo</summary>
@@ -131,7 +136,20 @@
       <h3>6. Dato faltante no es cero</h3>
       <p>Si ninguna fuente de una voz <em>podía</em> haber mencionado un partido (por ejemplo, una lista de 2007 frente a un partido de 2022), ese silencio no es un voto en contra. En ese caso el valor de esa voz se imputa con el de la otra y se avisa en la ficha (Rubin, 1976). Para eso cada fuente registra, cuando se conoce, su año de publicación y su alcance.</p>
 
-      <h3>7. Sesgos que reconocemos pero no corregimos</h3>
+      <h3>7. Conversación orgánica: extraer opinión de comunidades abiertas</h3>
+      <p>Las encuestas formales de hinchas son pocas. Para ampliar la voz popular, el sistema recolecta respuestas espontáneas en comunidades abiertas (Reddit y Bluesky, en inglés, español, portugués e italiano). Extraer opinión de texto libre tiene trampas propias, y cada una tiene su regla:</p>
+      <ul>
+        <li><strong>Muestreo por elicitación.</strong> Sólo se cuentan respuestas a hilos que preguntan explícitamente por “el mejor partido”. Un partido mencionado en la charla general puede estar ahí por trágico, por polémico o por bronca (el 7-1 se nombra mucho, no siempre con admiración).</li>
+        <li><strong>Una persona, un voto.</strong> Quien comenta diez veces no vale diez veces. Y quien nombra cuatro partidos reparte su voto entre los cuatro.</li>
+        <li><strong>Respaldo social con techo.</strong> Los votos positivos (upvotes, likes) suman, pero con escala logarítmica y un máximo de ×2. En un experimento con más de 100.000 comentarios, un voto positivo inicial asignado al azar aumentó un 32% la probabilidad del siguiente voto positivo y elevó un 25% la puntuación final, sin importar el contenido (Muchnik, Aral y Taylor, 2013); en mercados culturales artificiales, la popularidad visible vuelve el éxito desigual e impredecible (Salganik, Dodds y Watts, 2006).</li>
+        <li><strong>Sin bots ni cuentas borradas.</strong></li>
+        <li><strong>Umbral mínimo.</strong> Un partido entra en el ranking de una comunidad sólo si lo nombran al menos 3 personas distintas.</li>
+        <li><strong>Cada comunidad es una fuente.</strong> Así se aplican las mismas correcciones que al resto: una comunidad nacional (r/argentina, r/futebol) recibe el descuento endogrupal cuando habla de partidos de su país.</li>
+      </ul>
+      <p><strong>¿Y X/Twitter?</strong> Su API es paga y sus condiciones prohíben el scraping. Bluesky cumple el mismo rol con una API abierta y gratuita.</p>
+      <p><strong>Memoria colectiva (Wikipedia).</strong> La atención a un evento decae con el tiempo siguiendo un patrón regular: primero la memoria “comunicativa” de quienes lo vivieron y después la “cultural”, la de los archivos (Candia et al., 2019). Que un partido de hace décadas siga recibiendo visitas indica que entró en la memoria cultural. Pero atención no es valoración, así que esta señal empieza en 0% y queda a criterio de quien usa la herramienta.</p>
+
+      <h3>8. Sesgos que reconocemos pero no corregimos</h3>
       <ul>
         <li><strong>Nostalgia y “pico de reminiscencia”:</strong> recordamos con más intensidad lo vivido entre los 10 y los 30 años (Rubin, Rahhal y Poon, 1998), y tendemos a recordar el pasado mejor de lo que fue (<em>rosy retrospection</em>; Mitchell et al., 1997). Esto favorece a los partidos que vieron de jóvenes quienes hoy escriben. No lo corregimos porque no conocemos la edad de quienes votan; en parte se compensa con el sesgo de recencia.</li>
         <li><strong>Sesgo de supervivencia digital:</strong> los partidos anteriores a internet tienen menos listas en línea.</li>
@@ -144,14 +162,17 @@
         <li>Bar-Hillel, M. (1980). The base-rate fallacy in probability judgments. <em>Acta Psychologica, 44</em>(3), 211–233.</li>
         <li>Bikhchandani, S., Hirshleifer, D. y Welch, I. (1992). A theory of fads, fashion, custom, and cultural change as informational cascades. <em>Journal of Political Economy, 100</em>(5), 992–1026.</li>
         <li>Brown, R. y Kulik, J. (1977). Flashbulb memories. <em>Cognition, 5</em>(1), 73–99.</li>
+        <li>Candia, C., Jara-Figueroa, C., Rodriguez-Sickert, C., Barabási, A.-L. y Hidalgo, C. A. (2019). The universal decay of collective memory and attention. <em>Nature Human Behaviour, 3</em>(1), 82–91.</li>
         <li>Campbell, D. T. y Fiske, D. W. (1959). Convergent and discriminant validation by the multitrait-multimethod matrix. <em>Psychological Bulletin, 56</em>(2), 81–105.</li>
         <li>Fredrickson, B. L. y Kahneman, D. (1993). Duration neglect in retrospective evaluations of affective episodes. <em>Journal of Personality and Social Psychology, 65</em>(1), 45–55.</li>
         <li>Galton, F. (1907). Vox populi. <em>Nature, 75</em>, 450–451.</li>
         <li>Hastorf, A. H. y Cantril, H. (1954). They saw a game: A case study. <em>Journal of Abnormal and Social Psychology, 49</em>(1), 129–134.</li>
         <li>Lorenz, J., Rauhut, H., Schweitzer, F. y Helbing, D. (2011). How social influence can undermine the wisdom of crowd effect. <em>PNAS, 108</em>(22), 9020–9025.</li>
         <li>Mitchell, T. R., Thompson, L., Peterson, E. y Cronk, R. (1997). Temporal adjustments in the evaluation of events: The “rosy view”. <em>Journal of Experimental Social Psychology, 33</em>(4), 421–448.</li>
+        <li>Muchnik, L., Aral, S. y Taylor, S. J. (2013). Social influence bias: A randomized experiment. <em>Science, 341</em>(6146), 647–651.</li>
         <li>Rubin, D. B. (1976). Inference and missing data. <em>Biometrika, 63</em>(3), 581–592.</li>
         <li>Rubin, D. C., Rahhal, T. A. y Poon, L. W. (1998). Things learned in early adulthood are remembered best. <em>Memory &amp; Cognition, 26</em>(1), 3–19.</li>
+        <li>Salganik, M. J., Dodds, P. S. y Watts, D. J. (2006). Experimental study of inequality and unpredictability in an artificial cultural market. <em>Science, 311</em>(5762), 854–856.</li>
         <li>Surowiecki, J. (2004). <em>The Wisdom of Crowds</em>. Doubleday.</li>
         <li>Tajfel, H. y Turner, J. C. (1979). An integrative theory of intergroup conflict. En W. G. Austin y S. Worchel (Eds.), <em>The Social Psychology of Intergroup Relations</em> (pp. 33–47). Brooks/Cole.</li>
         <li>Tetlock, P. E. (2005). <em>Expert Political Judgment: How Good Is It? How Can We Know?</em> Princeton University Press.</li>

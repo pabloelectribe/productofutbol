@@ -1,6 +1,9 @@
 // Valida los datos y muestra el ranking en consola:  node scripts/ranking.mjs [N]
 import { matches } from "../data/matches.js";
-import { sources } from "../data/sources.js";
+import { sources as curated } from "../data/sources.js";
+import { scraped } from "../data/scraped.js";
+import { conversationSources } from "../js/scraped-sources.js";
+const sources = [...curated, ...conversationSources(scraped)];
 import { computeRanking, rankByVoice, SOURCE_TYPES, STAGE_VALUE } from "../js/scoring.js";
 
 const errors = [];

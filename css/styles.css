@@ -203,3 +203,10 @@ h1 {
 .refs { font-size: .85rem; padding-left: 1.4em; }
 .refs li { margin-bottom: 6px; }
 .voice-h { margin-top: 28px; }
+
+/* ── v3: recolección automática ── */
+.scrape-box { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--pop); border-radius: var(--radius); padding: 14px 16px; margin: 16px 0 8px; }
+.scrape-box.pending { border-left-color: var(--warn); }
+.scrape-box h3 { margin: 0 0 6px; font-size: 1rem; }
+.scrape-box p { margin: 6px 0; }
+input[type=range]:disabled { opacity: .4; }

@@ -1,5 +1,7 @@
 import { matches } from "../data/matches.js";
-import { sources } from "../data/sources.js";
+import { sources as curated } from "../data/sources.js";
+import { scraped } from "../data/scraped.js";
+import { conversationSources, memoryScores, MIN_AUTHORS } from "./scraped-sources.js";
 import { computeRanking, rankByVoice, SOURCE_TYPES, VOICES, CORRECTIONS, DEFAULTS } from "./scoring.js";
 
 const COMP_LABEL = {
@@ -43,6 +45,11 @@ const PRINCIPLES = {
   },
 };
 
+// Fuentes curadas a mano + comunidades recolectadas automáticamente
+const sources = [...curated, ...conversationSources(scraped)];
+const memory = memoryScores(scraped);
+const hasMemory = Object.keys(memory).length > 0;
+
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const pct = (x) => Math.round(x * 100);
@@ -50,6 +57,7 @@ const pct = (x) => Math.round(x * 100);
 const fresh = () => ({
   popularShare: DEFAULTS.popularShare * 100,
   intensity: DEFAULTS.intensityWeight * 100,
+  memoryWeight: 0,
   typeWeights: { ...DEFAULTS.typeWeights },
   corrections: { ...DEFAULTS.corrections },
 });
@@ -59,6 +67,8 @@ function compute() {
   return computeRanking(matches, sources, {
     popularShare: state.popularShare / 100,
     intensityWeight: state.intensity / 100,
+    memoryWeight: state.memoryWeight / 100,
+    memory,
     typeWeights: state.typeWeights,
     corrections: state.corrections,
   });
@@ -95,6 +105,9 @@ function renderControls() {
   $("#w-int").value = state.intensity;
   $("#w-voice-out").textContent = `${100 - state.popularShare} / ${state.popularShare}`;
   $("#w-int-out").textContent = `${state.intensity}%`;
+  $("#w-mem").value = state.memoryWeight;
+  $("#w-mem").disabled = !hasMemory;
+  $("#w-mem-out").textContent = hasMemory ? `${state.memoryWeight}%` : "sin datos";
 
   $("#corrections").innerHTML = Object.entries(CORRECTIONS).map(([k, c]) => slider({
     id: `c-${k}`, label: c.label, sub: c.concept, min: 0, max: c.max,
@@ -121,6 +134,7 @@ $("#comp").addEventListener("change", e => { state.comp = e.target.value; render
 $("#era").addEventListener("change", e => { state.era = e.target.value; render(); });
 $("#w-voice").addEventListener("input", e => { state.popularShare = Number(e.target.value); renderControls(); render(); });
 $("#w-int").addEventListener("input", e => { state.intensity = Number(e.target.value); renderControls(); render(); });
+$("#w-mem").addEventListener("input", e => { state.memoryWeight = Number(e.target.value); renderControls(); render(); });
 $("#reset").addEventListener("click", () => { Object.assign(state, fresh()); renderControls(); render(); });
 if (window.matchMedia("(max-width: 820px)").matches) $("#bias-group").open = false;
 
@@ -234,6 +248,7 @@ function detail(r) {
       ${meter("Voz popular", P.imputed ? 0 : P.score, "pop", P.imputed ? "imputada" : "")}
       ${meter("Intensidad", r.intensity, "int")}
     </div>
+    ${r.memory ? `<p class="muted small">Memoria colectiva: ${r.memory.views.toLocaleString("es-AR")} visitas mensuales (mediana) al artículo de Wikipedia en inglés.</p>` : ""}
     <div class="cols">
       <div>
         <h4 class="exp">Voz experta</h4>
@@ -301,9 +316,26 @@ function renderPrinciples(rows) {
 }
 
 // ── fuentes ──
+function scrapeStatus() {
+  const conv = scraped?.conversation || [];
+  if (!scraped?.builtAt) return `
+    <div class="scrape-box pending">
+      <h3>Recolección automática · <span class="warn">pendiente</span></h3>
+      <p>El sistema para extraer opiniones de comunidades abiertas está listo pero todavía no se ejecutó: Reddit (8 comunidades en 4 idiomas), Bluesky (4 idiomas) y visitas a Wikipedia. Cuando se corra, cada comunidad se suma como una fuente más de la voz popular.</p>
+      <p class="small muted">Para correrlo: <code>npm run scrape</code> (ver README).</p>
+    </div>`;
+  const total = conv.reduce((a, s) => a + s.authors, 0);
+  return `
+    <div class="scrape-box">
+      <h3>Recolección automática · ${new Date(scraped.builtAt).toLocaleDateString("es-AR")}</h3>
+      <p>${conv.length} comunidades · ${total.toLocaleString("es-AR")} personas que nombraron algún partido · memoria colectiva: ${hasMemory ? Object.keys(memory).length + " partidos" : "sin datos"}.</p>
+      <p class="small muted">Un partido entra en el ranking de una comunidad sólo si lo nombran al menos ${MIN_AUTHORS} personas distintas.</p>
+    </div>`;
+}
+
 function renderSources() {
   const byId = new Map(matches.map(m => [m.id, m]));
-  $("#sources").innerHTML = Object.entries(VOICES).map(([vk, v]) => `
+  $("#sources").innerHTML = scrapeStatus() + Object.entries(VOICES).map(([vk, v]) => `
     <h2 class="voice-h ${vk}">${v.label}</h2>
     ${Object.entries(SOURCE_TYPES).filter(([, t]) => t.voice === vk).map(([k, t]) => {
       const list = sources.filter(s => s.type === k);

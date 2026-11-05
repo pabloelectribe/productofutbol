@@ -21,6 +21,10 @@ Después abrí http://localhost:8000. También funciona tal cual en GitHub Pages
 | `js/scoring.js` | Algoritmo de puntuación (lo usan tanto el navegador como Node) |
 | `js/app.js` | Interfaz: filtros, pesos ajustables, detalle por partido y listado de fuentes |
 | `scripts/ranking.mjs` | Valida los datos y muestra el ranking en consola |
+| `data/aliases.js` | Cómo se reconoce cada partido en texto libre (apodos, equipos + año/resultado) y su artículo de Wikipedia |
+| `scraper/` | Recolección automática: Reddit, Bluesky y Wikipedia |
+| `data/scraped.js` | Resultado de la recolección (generado, lo lee la web) |
+| `scripts/test-scraper.mjs` | Pruebas del detector de partidos y del conteo de votos |
 
 ## Algoritmo (resumen)
 
@@ -37,6 +41,32 @@ El ranking se trata como un **problema de juicio colectivo**, con herramientas d
 - **Intensidad emocional (20%)** según la regla pico-final: goles, remontada, lo que estaba en juego, clímax tardío y prórroga/penales.
 
 La pestaña *Fundamentos* explica cada decisión con sus referencias, y *Expertos vs Hinchas* compara ambas voces.
+
+## Recolección automática (scraping)
+
+Amplía la voz popular con opiniones espontáneas de comunidades abiertas. Requiere Node 18+ y conexión a internet.
+
+```bash
+npm run scrape:reddit      # 8 comunidades de Reddit en 4 idiomas (vía el archivo abierto Arctic Shift)
+npm run scrape:wikipedia   # visitas a Wikipedia (memoria colectiva)
+BSKY_HANDLE=usuario.bsky.social BSKY_APP_PASSWORD=xxxx npm run scrape:bluesky
+node scraper/build.mjs     # junta todo en data/scraped.js
+npm test                   # pruebas + ranking resultante
+```
+
+Si Arctic Shift no responde: `node scraper/reddit.mjs --backend reddit` usa la API JSON pública de Reddit.
+
+Reglas de conteo:
+
+- Sólo hilos que preguntan explícitamente por el mejor partido.
+- Una persona, un voto, repartido entre los partidos que nombra.
+- Votos positivos con techo logarítmico (máximo ×2).
+- Sin bots.
+- Mínimo 3 personas distintas por partido.
+
+Cada comunidad entra como una fuente de la voz popular. X/Twitter no se usa: su API es paga y sus condiciones prohíben el scraping.
+
+Dominios necesarios: `arctic-shift.photon-reddit.com` (o `www.reddit.com`), `bsky.social`, `en.wikipedia.org`, `es.wikipedia.org`, `it.wikipedia.org`, `wikimedia.org`.
 
 ## Cómo agregar una fuente
 
