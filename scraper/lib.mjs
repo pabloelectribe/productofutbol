@@ -137,7 +137,7 @@ export function extractCandidates(text) {
 // sólo se cuentan respuestas a estas preguntas, no la charla general.
 // SEARCH: palabras para buscar hilos; ELICITATION_RE: filtro fino sobre el título.
 export const SEARCH = {
-  en: ["best match", "greatest match", "best game", "greatest game", "favourite match", "favorite match"],
+  en: ["greatest match", "best match", "best game", "greatest game", "favourite match", "favorite match", "best football match", "match you've ever"],
   es: ["mejor partido", "partido mas epico"],
   pt: ["melhor jogo", "maior jogo", "melhor partida"],
   it: ["partita piu bella", "miglior partita"],

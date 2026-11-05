@@ -26,10 +26,13 @@ async function resolve(lang, title) {
   return hit ? { title: hit.title, how: "búsqueda (revisar)" } : null;
 }
 
-// El título es específico si nombra a algún equipo del partido o una de sus frases.
+// El título es específico si nombra a los dos equipos, o el año del partido, o uno de sus apodos.
 const specific = (id, title) => {
   const t = normalize(title), a = aliases[id];
-  return [...a.teams.flat(), ...a.phrases].some(w => t.includes(normalize(w)));
+  const has = (w) => t.includes(normalize(w));
+  const bothTeams = a.teams.every(list => list.some(has));
+  const year = id.slice(-4);
+  return bothTeams || new RegExp(`(^|[^0-9-])${year}([^0-9]|$)`).test(t) || a.phrases.some(has);
 };
 
 const median = (xs) => { const s = [...xs].sort((a, b) => a - b); const n = s.length; return n ? (n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2) : 0; };

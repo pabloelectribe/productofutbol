@@ -15,38 +15,34 @@ const SUBS = [
   { sub: "futebol", lang: "pt", cc: "BRA" }, { sub: "calcio", lang: "it", cc: "ITA" },
 ];
 const MAX_THREADS = 40, MAX_COMMENTS = 1500, MIN_COMMENTS = 10;
-const WINDOWS = [2008, 2012, 2015, 2017, 2019, 2021, 2023, 2025, 2027]; // cortes de año
-
 const backend = process.argv.includes("--backend") ? process.argv[process.argv.indexOf("--backend") + 1] : "arctic";
 const only = process.argv.includes("--sub") ? process.argv[process.argv.indexOf("--sub") + 1] : null;
 
 const A = "https://arctic-shift.photon-reddit.com/api";
 const post = (p) => ({ id: p.id, title: p.title, num_comments: p.num_comments, created: p.created_utc });
 
-// Busca en una ventana de tiempo; si el servidor se queda sin tiempo, la parte en dos.
-async function arcticWindow(sub, q, after, before, depth = 0) {
-  const u = `${A}/posts/search?subreddit=${sub}&title=${encodeURIComponent(q)}&after=${after}&before=${before}&limit=100`;
-  const j = await getJSON(u, { delay: 700, allow: [422] });
-  if (j.data) return j.data.map(post);
-  if (depth >= 3) { console.warn(`  sin respuesta: r/${sub} "${q}" ${after}..${before}`); return []; }
-  await sleep(3000);
-  const mid = new Date((Date.parse(after) + Date.parse(before)) / 2).toISOString().slice(0, 10);
-  return [...await arcticWindow(sub, q, after, mid, depth + 1), ...await arcticWindow(sub, q, mid, before, depth + 1)];
+// Arctic Shift rechaza con HTTP 422 ("slow down") las búsquedas por título con
+// rango de fechas en subreddits grandes, y también cuando se pregunta muy seguido.
+// Por eso: una búsqueda por frase sobre todo el período, con pausas y reintentos.
+async function arcticSearch(sub, q) {
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const j = await getJSON(`${A}/posts/search?subreddit=${sub}&title=${encodeURIComponent(q)}&limit=100`, { delay: 5000, allow: [422] });
+    if (j.data) return j.data.map(post);
+    await sleep(15000 * (attempt + 1));
+  }
+  console.warn(`  sin respuesta: r/${sub} "${q}"`);
+  return [];
 }
 
 const api = {
   arctic: {
-    async threads(sub, q) {
-      const out = [];
-      for (let i = 0; i < WINDOWS.length - 1; i++)
-        out.push(...await arcticWindow(sub, q, `${WINDOWS[i]}-01-01`, `${WINDOWS[i + 1]}-01-01`));
-      return out;
-    },
+    threads: arcticSearch,
     async comments(id) {
       const out = [];
-      let after = 0;
-      while (out.length < MAX_COMMENTS) {
-        const j = await getJSON(`${A}/comments/search?link_id=${id}&limit=100${after ? `&after=${after}` : ""}`, { delay: 700 });
+      let after = 0, fails = 0;
+      while (out.length < MAX_COMMENTS && fails < 4) {
+        const j = await getJSON(`${A}/comments/search?link_id=${id}&limit=100${after ? `&after=${after}` : ""}`, { delay: 2500, allow: [422] });
+        if (!j.data) { fails++; await sleep(15000); continue; }
         const batch = j.data || [];
         if (!batch.length) break;
         out.push(...batch.map(c => ({
